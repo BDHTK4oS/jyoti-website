@@ -178,7 +178,8 @@ input[type="range"] { width: 100%; accent-color: var(--crimson); }
 .car:hover { border-color: var(--crimson); transform: translateY(-3px); }
 .car-art { aspect-ratio: 16 / 7; max-width: 100%; display: grid; place-items: center; background: color-mix(in srgb, var(--navy) 6%, var(--surface)); border-radius: 10px; overflow: hidden; }
 .car-art svg { width: 86%; height: auto; }
-.car-art img { width: 100%; height: 100%; object-fit: cover; }
+.car-art:has(img) { background: #fff; }
+.car-art img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
 .car-art svg .body { fill: var(--navy); }
 .car-art svg .glass { fill: color-mix(in srgb, var(--surface) 70%, var(--navy)); }
 .car-art svg .wheel { fill: var(--ink); }
