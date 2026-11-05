@@ -89,6 +89,7 @@ collections:
           - { name: email, label: "Email", widget: string }
           - { name: address, label: "Address", widget: text }
           - { name: map_link, label: "Google Maps link", widget: string }
+          - { name: enquiry_alert, label: "Enquiry alert email (FormSubmit)", widget: string, required: false, hint: "Every website enquiry is emailed here. After activating, you can replace the address with the private code FormSubmit sends you. Leave empty to stop the emails." }
           - { name: hours, label: "Opening hours", widget: string }
           - { name: gstin, label: "GSTIN", widget: string }
           - { name: msme, label: "Udyam / MSME number", widget: string }
