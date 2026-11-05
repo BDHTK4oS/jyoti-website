@@ -615,7 +615,10 @@
     out._template = "table"; out._captcha = "false";
     if (fd.get("email")) out._replyto = fd.get("email");
     try {
-      fetch("https://formsubmit.co/ajax/" + encodeURIComponent(to), { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(out), keepalive: true }).catch(function () {});
+      var bodyParams = new URLSearchParams();
+      Object.keys(out).forEach(function (k) { bodyParams.append(k, out[k]); });
+      fetch("https://formsubmit.co/ajax/" + encodeURIComponent(to), { method: "POST", headers: { Accept: "application/json" }, body: bodyParams })
+        .then(function (r) { return r.json(); }).then(function (j) { window.__enquiryAlert = j; }).catch(function (e) { window.__enquiryAlert = String(e); });
     } catch (e) {}
   }
 
