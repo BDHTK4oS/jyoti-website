@@ -60,5 +60,241 @@
       "extra_hour": 480,
       "category": "Luxury MPV"
     }
+  ],
+  "on_request_heading": "More cars on request",
+  "on_request_intro": "Need something else? We arrange these through our trusted partner fleet. Tell us your date and trip and we'll confirm the car and the rate.",
+  "on_request": [
+    {
+      "name": "Maruti Swift",
+      "category": "Hatchback",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 1,
+      "best_for": "Short city errands on a budget"
+    },
+    {
+      "name": "Maruti WagonR",
+      "category": "Hatchback",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 1,
+      "best_for": "Quick local trips"
+    },
+    {
+      "name": "Honda Amaze",
+      "category": "Sedan",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 2,
+      "best_for": "Office duty and airport runs"
+    },
+    {
+      "name": "Hyundai Aura",
+      "category": "Sedan",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 2,
+      "best_for": "Office duty and airport runs"
+    },
+    {
+      "name": "Toyota Etios",
+      "category": "Sedan",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 2,
+      "best_for": "Comfortable city and highway trips"
+    },
+    {
+      "name": "Honda City",
+      "category": "Sedan",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 2,
+      "best_for": "Executive city travel"
+    },
+    {
+      "name": "Hyundai Verna",
+      "category": "Sedan",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 2,
+      "best_for": "Executive city travel"
+    },
+    {
+      "name": "Maruti Ciaz",
+      "category": "Sedan",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 2,
+      "best_for": "Roomy sedan for longer trips"
+    },
+    {
+      "name": "Maruti XL6",
+      "category": "MPV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 2,
+      "best_for": "Small groups and families"
+    },
+    {
+      "name": "Kia Carens",
+      "category": "MPV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 2,
+      "best_for": "Small groups and families"
+    },
+    {
+      "name": "Kia Carnival",
+      "category": "Premium MPV",
+      "shape": "mpv",
+      "seats": 7,
+      "bags": 4,
+      "best_for": "Leadership travel and VIP guests"
+    },
+    {
+      "name": "Mahindra Bolero",
+      "category": "SUV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 2,
+      "best_for": "Rough roads and project sites"
+    },
+    {
+      "name": "Mahindra Scorpio-N",
+      "category": "SUV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 2,
+      "best_for": "Outstation and hill trips"
+    },
+    {
+      "name": "Mahindra XUV700",
+      "category": "SUV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 3,
+      "best_for": "Long highway trips in comfort"
+    },
+    {
+      "name": "Tata Safari",
+      "category": "SUV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 3,
+      "best_for": "Long highway trips in comfort"
+    },
+    {
+      "name": "MG Hector Plus",
+      "category": "SUV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 2,
+      "best_for": "Family outstation trips"
+    },
+    {
+      "name": "Toyota Fortuner",
+      "category": "SUV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 3,
+      "best_for": "Premium SUV for hills and highways"
+    },
+    {
+      "name": "Toyota Camry",
+      "category": "Luxury",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 2,
+      "best_for": "Senior executives and guests"
+    },
+    {
+      "name": "Skoda Superb",
+      "category": "Luxury",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 3,
+      "best_for": "Senior executives and guests"
+    },
+    {
+      "name": "Mercedes-Benz C-Class",
+      "category": "Luxury",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 2,
+      "best_for": "Weddings and VIP pickups"
+    },
+    {
+      "name": "Mercedes-Benz E-Class",
+      "category": "Luxury",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 3,
+      "best_for": "Weddings and VIP pickups"
+    },
+    {
+      "name": "BMW 5 Series",
+      "category": "Luxury",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 3,
+      "best_for": "Weddings and VIP pickups"
+    },
+    {
+      "name": "Audi A6",
+      "category": "Luxury",
+      "shape": "sedan",
+      "seats": 4,
+      "bags": 3,
+      "best_for": "Weddings and VIP pickups"
+    },
+    {
+      "name": "Tempo Traveller 12-seater",
+      "category": "Group travel",
+      "shape": "mpv",
+      "seats": 12,
+      "bags": 8,
+      "best_for": "Team outings and site visits"
+    },
+    {
+      "name": "Force Urbania 13-seater",
+      "category": "Group travel",
+      "shape": "mpv",
+      "seats": 13,
+      "bags": 10,
+      "best_for": "Premium van for delegations"
+    },
+    {
+      "name": "Tempo Traveller 17-seater",
+      "category": "Group travel",
+      "shape": "mpv",
+      "seats": 17,
+      "bags": 12,
+      "best_for": "Larger teams and tours"
+    },
+    {
+      "name": "Tempo Traveller 26-seater",
+      "category": "Group travel",
+      "shape": "mpv",
+      "seats": 26,
+      "bags": 0,
+      "best_for": "Conferences and events"
+    },
+    {
+      "name": "Mini bus 32-seater",
+      "category": "Group travel",
+      "shape": "mpv",
+      "seats": 32,
+      "bags": 0,
+      "best_for": "Staff transport and events"
+    },
+    {
+      "name": "Coach 45-seater",
+      "category": "Group travel",
+      "shape": "mpv",
+      "seats": 45,
+      "bags": 0,
+      "best_for": "Large groups, weddings and tours"
+    }
   ]
 }
