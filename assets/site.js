@@ -863,6 +863,22 @@
     }
   }
 
+  /* QR code that opens the phone's dialler (loads a small library the first time it's needed) */
+  function showQR(wrap, text) {
+    if (!wrap) return;
+    var draw = function () {
+      try {
+        var q = window.qrcode(0, "M"); q.addData(text); q.make();
+        wrap.querySelector(".cp-qr-img").innerHTML = q.createSvgTag(5, 0);
+        wrap.hidden = false;
+      } catch (e) {}
+    };
+    if (window.qrcode) { draw(); return; }
+    var s = document.createElement("script");
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+    s.onload = draw; document.head.appendChild(s);
+  }
+
   /* ---------- Desktop call panel ----------
      Phones dial "tel:" links directly. Most computers have no calling app, so there the
      call buttons open a small panel with the number, copy, WhatsApp and "call from an app". */
@@ -874,7 +890,7 @@
     function onKey(e) { if (e.key === "Escape") close(); }
     document.addEventListener("click", function (e) {
       var a = e.target.closest && e.target.closest('a[href^="tel:"]');
-      if (!a || e.ctrlKey || e.metaKey) return;
+      if (!a || a.classList.contains("cp-app") || e.ctrlKey || e.metaKey) return;
       e.preventDefault();
       close();
       var tel = a.getAttribute("href"), num = tel.replace(/^tel:/, ""), shown = a.textContent.trim() || num;
@@ -882,11 +898,12 @@
       box.className = "call-panel"; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Call JyotiCab.com");
       box.innerHTML = '<div class="cp-card"><button type="button" class="cp-x" aria-label="Close">&times;</button>' +
         '<p class="cp-label">Call us, 24 hours</p><p class="cp-num">' + esc(shown) + "</p>" +
+        '<div class="cp-qr" hidden><div class="cp-qr-img" aria-hidden="true"></div><p>Scan with your phone camera to call</p></div>' +
         '<div class="cp-actions"><button type="button" class="btn btn-primary cp-copy">Copy number</button>' +
         '<a class="btn btn-ghost" href="' + esc(waLink(site, "Hello JyotiCab.com, I'd like to book a cab.")) + '" target="_blank" rel="noopener">Chat on WhatsApp</a></div>' +
-        '<a class="btn btn-call-phone cp-app" href="' + esc(tel) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>Call from my phone</a>' +
-        '<p class="cp-hint">Sends the call to your Android phone if Chrome is signed in to the same Google account, or opens Phone Link or another calling app.</p></div>';
+        '<a class="cp-app" href="' + esc(tel) + '">Call from an app on this computer</a></div>';
       document.body.appendChild(box);
+      showQR(box.querySelector(".cp-qr"), "tel:+91" + digits(num).slice(-10));
       box.addEventListener("click", function (ev) { if (ev.target === box || ev.target.closest(".cp-x")) close(); });
       box.querySelector(".cp-app").addEventListener("click", function () { setTimeout(close, 300); });
       var copy = box.querySelector(".cp-copy");
