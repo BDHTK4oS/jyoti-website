@@ -1,7 +1,7 @@
 {
   "show_section": true,
   "heading": "Companies we've driven for",
-  "intro": "Leading pharmaceutical companies, banks, manufacturers, public bodies and international organisations trust us with staff travel, guest pickups and outstation duties across Kolkata and West Bengal.",
+  "intro": "Leading pharmaceutical companies, banks and insurers, manufacturers, universities, public bodies and international organisations trust us with staff travel, guest pickups and outstation duties across Kolkata and West Bengal.",
   "show_logos": true,
   "clients": [
     {
@@ -200,6 +200,454 @@
       "name": "Central Drugs Laboratory",
       "logo": "",
       "sector": "Government & Public Bodies",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "GlaxoSmithKline Consumer Healthcare",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Alkem Laboratories",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Intas Pharmaceuticals",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Ipca Laboratories",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Hetero Healthcare",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Wockhardt",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "A. Menarini India",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Albert David",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Nicholas Piramal India",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Bristol Myers Squibb India",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Panacea Biotec",
+      "logo": "",
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Canara Bank",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Bank of India",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Karur Vysya Bank",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "DCB Bank",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "ICICI Lombard",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "ICICI Prudential Life Insurance",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Bajaj Allianz",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Max Life Insurance",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Bharti AXA Life Insurance",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Arohan Financial Services",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Future Generali India Life Insurance",
+      "logo": "",
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Akzo Nobel India",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Berger Paints",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Godrej Industries",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Eureka Forbes",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Faber-Castell India",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Coca-Cola India",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Panasonic India",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Khadim's",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Borosil",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Bunge India",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Duncans Industries",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Mahindra Holidays & Resorts",
+      "logo": "",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "BOC India",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "D-Link India",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "PPG Industries India",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Praxair India",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Piaggio Vehicles",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "KEC International",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Dunlop India",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Brother International (India)",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Jindal Steel & Power",
+      "logo": "",
+      "sector": "Infrastructure & Mining",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Hindustan Copper",
+      "logo": "",
+      "sector": "Infrastructure & Mining",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Hindustan Zinc",
+      "logo": "",
+      "sector": "Infrastructure & Mining",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Bharat Aluminium Company (BALCO)",
+      "logo": "",
+      "sector": "Infrastructure & Mining",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Eastern Coalfields",
+      "logo": "",
+      "sector": "Infrastructure & Mining",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Capgemini India",
+      "logo": "",
+      "sector": "Services, IT & Media",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Cushman & Wakefield",
+      "logo": "",
+      "sector": "Services, IT & Media",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Aramex India",
+      "logo": "",
+      "sector": "Services, IT & Media",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "ABP Group",
+      "logo": "",
+      "sector": "Services, IT & Media",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Indian Institute of Technology (IIT)",
+      "logo": "",
+      "sector": "Education & Institutions",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Indian Institute of Management (IIM)",
+      "logo": "",
+      "sector": "Education & Institutions",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Jadavpur University",
+      "logo": "",
+      "sector": "Education & Institutions",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "University of Calcutta",
+      "logo": "",
+      "sector": "Education & Institutions",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "American Institute of Indian Studies",
+      "logo": "",
+      "sector": "Education & Institutions",
       "location": "",
       "services": "",
       "since": ""
