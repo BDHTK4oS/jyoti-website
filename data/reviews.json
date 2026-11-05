@@ -5,43 +5,6 @@
   "rating": "4.0",
   "review_count": "125",
   "min_stars": 5,
-  "reviews": [
-    {
-      "author": "Sample Reviewer 1",
-      "stars": "5",
-      "text": "Sample review text. The driver reported ten minutes early and the car was spotless. Billing matched the duty slip exactly.",
-      "when": "2 weeks ago"
-    },
-    {
-      "author": "Sample Reviewer 2",
-      "stars": "5",
-      "text": "Sample review text. Booked a late-night airport drop at short notice and they confirmed within minutes.",
-      "when": "1 month ago"
-    },
-    {
-      "author": "Sample Reviewer 3",
-      "stars": "5",
-      "text": "Sample review text. We use them for daily office duty. Courteous drivers who know the city well.",
-      "when": "1 month ago"
-    },
-    {
-      "author": "Sample Reviewer 4",
-      "stars": "5",
-      "text": "Sample review text. Two-day outstation trip to the plant went smoothly. Clear invoice with every reading on it.",
-      "when": "2 months ago"
-    },
-    {
-      "author": "Sample Reviewer 5",
-      "stars": "5",
-      "text": "Sample review text. The Innova Crysta was comfortable for our visiting directors. Will book again.",
-      "when": "3 months ago"
-    },
-    {
-      "author": "Sample Reviewer 6",
-      "stars": "5",
-      "text": "Sample review text. Easy to book on WhatsApp and the estimate on the website was close to the final bill.",
-      "when": "5 months ago"
-    }
-  ],
-  "sample_notice": "The review cards below are samples for testing. The rating above is your real Google rating. Live Google reviews replace these once connected."
+  "reviews": [],
+  "sample_notice": ""
 }
