@@ -597,6 +597,28 @@
     }
   }
 
+  /* Email a copy of each enquiry to the office through FormSubmit (formsubmit.co).
+     Sent from the visitor's browser, because FormSubmit only accepts browser requests.
+     The address (or the private FormSubmit code that replaces it) is set in Admin > Site details. */
+  var ALERT_LABELS = { enquiry_type: "Enquiry type", name: "Name", phone: "Phone", email: "Email", company: "Company", trip: "Trip type", car: "Car",
+    date: "Date", time: "Reporting time", pickup: "Pickup address", drop: "Drop address", pickup_pin: "Pickup on map", drop_pin: "Drop on map", volume: "Cars per month", message: "Notes" };
+  function emailAlert(form, site) {
+    var to = String(site.enquiry_alert || "").trim();
+    if (!to) return;
+    var fd = new FormData(form);
+    if (fd.get("company_website")) return; // spam trap filled in
+    var out = {};
+    Object.keys(ALERT_LABELS).forEach(function (k) { var v = fd.get(k); if (v) out[ALERT_LABELS[k]] = String(v).slice(0, 1500); });
+    out["Page"] = location.href.split("?")[0];
+    var who = [fd.get("name"), fd.get("phone")].filter(Boolean).join(", ");
+    out._subject = (form.getAttribute("name") === "corporate" ? "Corporate quote request" : "New booking enquiry") + (who ? " - " + who : "") + " | JyotiCab.com";
+    out._template = "table"; out._captcha = "false";
+    if (fd.get("email")) out._replyto = fd.get("email");
+    try {
+      fetch("https://formsubmit.co/ajax/" + encodeURIComponent(to), { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(out), keepalive: true }).catch(function () {});
+    } catch (e) {}
+  }
+
   function enquiryForm(cars, site, extra) {
     var form = document.getElementById("enquiry");
     if (!form) return;
@@ -628,6 +650,7 @@
         if (!r.ok) throw new Error();
         status.hidden = false; status.className = "form-status ok";
         status.textContent = r.preview ? "Preview only: on the live site this enquiry is emailed to you." : "Enquiry sent. We'll call you back shortly to confirm the car and timing.";
+        if (!r.preview) emailAlert(form, site);
         form.reset();
       }).catch(function () {
         status.hidden = false; status.className = "form-status err";
