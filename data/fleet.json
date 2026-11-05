@@ -1,9 +1,64 @@
 {
   "cars": [
-    { "name": "Dzire", "category": "Sedan", "shape": "sedan", "seats": 4, "bags": 2, "package_price": 2000, "extra_km": 20, "extra_hour": 200, "best_for": "Daily office duty, airport runs, city meetings", "photo": "" },
-    { "name": "Ertiga", "category": "MPV", "shape": "mpv", "seats": 6, "bags": 2, "package_price": 2500, "extra_km": 25, "extra_hour": 250, "best_for": "Small teams and families on a budget", "photo": "" },
-    { "name": "Innova", "category": "MPV", "shape": "mpv", "seats": 7, "bags": 3, "package_price": 2500, "extra_km": 25, "extra_hour": 250, "best_for": "Site visits, group travel, outstation trips", "photo": "" },
-    { "name": "Innova Crysta", "category": "Premium MPV", "shape": "mpv", "seats": 6, "bags": 4, "package_price": 3200, "extra_km": 32, "extra_hour": 320, "best_for": "Senior executives, long outstation tours", "photo": "" },
-    { "name": "Innova Hycross", "category": "Luxury MPV", "shape": "mpv", "seats": 6, "bags": 4, "package_price": 4800, "extra_km": 48, "extra_hour": 480, "best_for": "VIP guests, leadership travel, events", "photo": "" }
+    {
+      "shape": "sedan",
+      "bags": 2,
+      "name": "Dzire",
+      "seats": 4,
+      "best_for": "Daily office duty, airport runs, city meetings",
+      "package_price": 2000,
+      "extra_km": 20,
+      "photo": "/images/uploads/images-2-.jpeg",
+      "extra_hour": 200,
+      "category": "Sedan"
+    },
+    {
+      "shape": "mpv",
+      "bags": 2,
+      "name": "Ertiga",
+      "seats": 6,
+      "best_for": "Small teams and families on a budget",
+      "package_price": 2500,
+      "extra_km": 25,
+      "photo": "/images/uploads/images-3-.jpeg",
+      "extra_hour": 250,
+      "category": "MPV"
+    },
+    {
+      "shape": "mpv",
+      "bags": 3,
+      "name": "Innova",
+      "seats": 7,
+      "best_for": "Site visits, group travel, outstation trips",
+      "package_price": 2500,
+      "extra_km": 25,
+      "photo": "/images/uploads/front-left-side-47.avif",
+      "extra_hour": 250,
+      "category": "MPV"
+    },
+    {
+      "shape": "mpv",
+      "bags": 4,
+      "name": "Innova Crysta",
+      "seats": 6,
+      "best_for": "Senior executives, long outstation tours",
+      "package_price": 3200,
+      "extra_km": 32,
+      "photo": "/images/uploads/396ijta_1496119.avif",
+      "extra_hour": 320,
+      "category": "Premium MPV"
+    },
+    {
+      "shape": "mpv",
+      "bags": 4,
+      "name": "Innova Hycross",
+      "seats": 6,
+      "best_for": "VIP guests, leadership travel, events",
+      "package_price": 4800,
+      "extra_km": 48,
+      "photo": "/images/uploads/toyota-innova-hycross-left-front-three-quarter2.avif",
+      "extra_hour": 480,
+      "category": "Luxury MPV"
+    }
   ]
 }
