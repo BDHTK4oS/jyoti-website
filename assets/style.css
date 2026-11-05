@@ -426,3 +426,20 @@ table.rates { width: 100%; border-collapse: collapse; min-width: 620px; font-var
 .client.has-logo .client-mark { width: 116px; height: 64px; padding: 8px 10px; }
 .client-mark img { filter: grayscale(1) contrast(1.1); opacity: .9; }
 .client.has-logo .client-mark img { width: 100%; height: 48px; object-fit: contain; }
+
+/* Client marquee */
+.client-marquee { display: grid; gap: 14px; margin-bottom: 18px; }
+.mq-row { overflow-x: auto; scrollbar-width: none; cursor: grab; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%); }
+.mq-row::-webkit-scrollbar { display: none; }
+.mq-row.dragging { cursor: grabbing; }
+.mq-row:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+.mq-track { display: flex; gap: 14px; list-style: none; margin: 0; padding: 6px 0; width: max-content; }
+.mq-item { flex: 0 0 auto; width: 184px; height: 96px; display: grid; place-items: center; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 20px; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; user-select: none; }
+.mq-item:hover { transform: translateY(-3px); border-color: var(--crimson); box-shadow: 0 12px 24px -14px rgba(0, 4, 120, .45); }
+.mq-item img { max-width: 100%; max-height: 58px; width: auto; height: auto; object-fit: contain; pointer-events: none; }
+.mq-item span { font: 700 0.95rem/1.25 var(--font-display); font-stretch: 108%; color: #0b1045; text-align: center; text-wrap: balance; }
+.mq-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.client-all { margin-top: 22px; }
+.client-strip-band .client-marquee { margin-bottom: 0; }
+.client-mark img, .client:hover .client-mark img, .client-strip img { filter: none !important; opacity: 1 !important; }
+@media (max-width: 560px) { .mq-item { width: 150px; height: 84px; padding: 12px 14px; } .mq-item img { max-height: 48px; } }

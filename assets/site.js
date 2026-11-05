@@ -584,6 +584,56 @@
   }
 
 
+
+  /* ---------- Client logo marquee: auto-scrolls, pauses on hover/touch, draggable, arrow buttons ---------- */
+  function mqItem(c, showLogos) {
+    var logo = showLogos && c.logo;
+    return '<li class="mq-item' + (logo ? " has-logo" : "") + '" title="' + esc(c.name) + '">' +
+      (logo ? '<img src="' + esc(c.logo) + '" alt="' + esc(c.name) + '" draggable="false">' : "<span>" + esc(c.name) + "</span>") + "</li>";
+  }
+  function Marquee(row, html, dir, speed) {
+    row.innerHTML = '<ul class="mq-track">' + html + html + "</ul>";
+    var paused = false, timer = null, pos = 0, dragging = false, startX = 0, startPos = 0;
+    var half = function () { return row.scrollWidth / 2; };
+    var wrap = function () { var h = half(); if (h <= 0) return; if (pos >= h) pos -= h; if (pos < 0) pos += h; row.scrollLeft = pos; };
+    var pause = function () { paused = true; clearTimeout(timer); };
+    var resume = function (ms) { clearTimeout(timer); timer = setTimeout(function () { pos = row.scrollLeft; paused = false; }, ms || 1500); };
+    requestAnimationFrame(function () { pos = dir < 0 ? half() / 2 : 0; row.scrollLeft = pos; });
+    if (!reduced()) {
+      (function tick() { if (!paused && !dragging && document.visibilityState !== "hidden") { pos += dir * speed; wrap(); } requestAnimationFrame(tick); })();
+    }
+    row.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") pause(); });
+    row.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse" && !dragging) resume(600); });
+    row.addEventListener("focusin", pause);
+    row.addEventListener("focusout", function () { resume(); });
+    row.addEventListener("touchstart", pause, { passive: true });
+    row.addEventListener("touchend", function () { resume(2500); }, { passive: true });
+    row.addEventListener("wheel", function () { pause(); resume(2000); }, { passive: true });
+    row.addEventListener("scroll", function () { if (paused || dragging) { pos = row.scrollLeft; if (pos >= half() || pos <= 0) wrap(); } }, { passive: true });
+    row.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse") return; dragging = true; startX = e.clientX; startPos = row.scrollLeft; row.classList.add("dragging"); pause(); });
+    window.addEventListener("pointermove", function (e) { if (!dragging) return; pos = startPos - (e.clientX - startX); wrap(); });
+    window.addEventListener("pointerup", function () { if (!dragging) return; dragging = false; row.classList.remove("dragging"); resume(1200); });
+    return {
+      nudge: function (px) {
+        pause(); var from = row.scrollLeft, target = from + px, t0 = performance.now();
+        (function anim(t) { var k = Math.min(1, (t - t0) / 400), e = 1 - Math.pow(1 - k, 3); pos = from + (target - from) * e; wrap(); if (k < 1) requestAnimationFrame(anim); else resume(2500); })(t0);
+      }
+    };
+  }
+  function buildMarquee(host, clients, showLogos) {
+    var rows = Math.max(1, +host.getAttribute("data-marquee") || 1);
+    var ordered = clients.filter(function (c) { return showLogos && c.logo; }).concat(clients.filter(function (c) { return !(showLogos && c.logo); }));
+    var groups = [];
+    for (var r = 0; r < rows; r++) groups.push([]);
+    ordered.forEach(function (c, i) { groups[i % rows].push(c); });
+    host.innerHTML = groups.map(function () { return '<div class="mq-row" tabindex="0" aria-label="Client logos, scrolling. Hover or tap to pause."></div>'; }).join("");
+    var ctrls = [];
+    host.querySelectorAll(".mq-row").forEach(function (row, i) {
+      ctrls.push(Marquee(row, groups[i].map(function (c) { return mqItem(c, showLogos); }).join(""), i % 2 ? -1 : 1, 0.45));
+    });
+    return ctrls;
+  }
+
   /* ---------- Portfolio: highlights, clients, credentials ---------- */
   function initials(name) {
     var w = String(name || "").replace(/\b(pvt|private|ltd|limited|llp|inc|co)\b\.?/gi, "").trim().split(/\s+/).filter(Boolean);
@@ -630,8 +680,20 @@
       if (cl.sample_notice && clients.length) { var note = document.createElement("p"); note.className = "sample-note"; note.textContent = cl.sample_notice; sec.querySelector(".wrap").insertBefore(note, sec.querySelector(".wrap").firstChild); }
       if (!showClients || (!clients.length && !isPreview)) sec.hidden = true;
       else if (!clients.length) {
+        sec.querySelectorAll(".client-marquee, .mq-bar").forEach(function (x) { x.hidden = true; }); if (sec.querySelector(".client-all")) sec.querySelector(".client-all").hidden = false;
         wall.innerHTML = '<li class="client-empty"><h3>Your client list will appear here</h3><p>Add each company in the admin panel under Client list: name, industry, what you do for them and, with their permission, a logo.</p></li>';
       } else {
+        var mqHost = sec.querySelector(".client-marquee");
+        if (mqHost) {
+          var ctrls = buildMarquee(mqHost, clients, cl.show_logos !== false);
+          var mnav = sec.querySelector(".mq-nav");
+          if (mnav) mnav.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; ctrls.forEach(function (c, i) { c.nudge((b.dataset.dir === "next" ? 320 : -320) * (i % 2 ? -1 : 1)); }); });
+          var tog = sec.querySelector(".client-toggle"), all = sec.querySelector(".client-all");
+          if (tog && all) {
+            tog.textContent = "See all " + clients.length + " clients by industry";
+            tog.addEventListener("click", function () { var open = all.hidden; all.hidden = !open; tog.setAttribute("aria-expanded", open); tog.textContent = open ? "Hide full list" : "See all " + clients.length + " clients by industry"; if (open && hasGSAP()) gsap.from(all.querySelectorAll(".client"), { y: 16, opacity: 0, duration: 0.45, stagger: 0.025, ease: "power2.out" }); });
+          }
+        }
         wall.innerHTML = clients.map(function (c) { return clientTile(c, cl.show_logos !== false); }).join("");
         var sectors = [];
         clients.forEach(function (c) { if (c.sector && sectors.indexOf(c.sector) < 0) sectors.push(c.sector); });
@@ -649,10 +711,6 @@
             if (hasGSAP()) gsap.fromTo(shown, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.03, ease: "power2.out", overwrite: true });
           });
         }
-        if (hasGSAP() && typeof ScrollTrigger !== "undefined") {
-          gsap.registerPlugin(ScrollTrigger);
-          gsap.from(wall.querySelectorAll(".client"), { y: 24, opacity: 0, duration: 0.6, stagger: 0.05, ease: "power3.out", scrollTrigger: { trigger: wall, start: "top 85%", once: true } });
-        }
       }
     }
 
@@ -660,10 +718,7 @@
     if (strip && showClients && clients.length) {
       strip.hidden = false;
       if (cl.sample_notice) { var sn2 = document.createElement("p"); sn2.className = "sample-note"; sn2.textContent = cl.sample_notice; strip.querySelector(".wrap").insertBefore(sn2, strip.querySelector(".wrap").firstChild); }
-      strip.querySelector(".client-strip").innerHTML = clients.slice(0, 8).map(function (c) {
-        var logo = cl.show_logos !== false && c.logo;
-        return '<li title="' + esc(c.name) + '">' + (logo ? '<img src="' + esc(c.logo) + '" alt="' + esc(c.name) + '" loading="lazy">' : "<span>" + esc(c.name) + "</span>") + "</li>";
-      }).join("");
+      var host = strip.querySelector(".client-marquee"); if (host) buildMarquee(host, clients, cl.show_logos !== false);
     }
   }
 
