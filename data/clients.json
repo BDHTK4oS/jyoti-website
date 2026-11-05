@@ -14,7 +14,7 @@
     },
     {
       "name": "Asian Paints",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-asian-paints.svg",
       "sector": "FMCG & Consumer",
       "location": "",
       "services": "",
@@ -22,7 +22,7 @@
     },
     {
       "name": "Dabur India",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-dabur.png",
       "sector": "FMCG & Consumer",
       "location": "",
       "services": "",
@@ -30,7 +30,7 @@
     },
     {
       "name": "Pfizer",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-pfizer.svg",
       "sector": "Pharma & Healthcare",
       "location": "",
       "services": "",
@@ -38,7 +38,7 @@
     },
     {
       "name": "Johnson & Johnson",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-jnj.svg",
       "sector": "Pharma & Healthcare",
       "location": "",
       "services": "",
@@ -46,7 +46,7 @@
     },
     {
       "name": "Abbott Healthcare",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-abbott.svg",
       "sector": "Pharma & Healthcare",
       "location": "",
       "services": "",
@@ -54,7 +54,7 @@
     },
     {
       "name": "Cipla Ltd",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-cipla.svg",
       "sector": "Pharma & Healthcare",
       "location": "",
       "services": "",
@@ -62,7 +62,7 @@
     },
     {
       "name": "Dr. Reddy's Laboratories",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-dr-reddys.jpg",
       "sector": "Pharma & Healthcare",
       "location": "",
       "services": "",
@@ -70,7 +70,7 @@
     },
     {
       "name": "Zydus Healthcare",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-zydus.jpg",
       "sector": "Pharma & Healthcare",
       "location": "",
       "services": "",
@@ -78,7 +78,7 @@
     },
     {
       "name": "HDFC Bank",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-hdfc-bank.svg",
       "sector": "Banking & Finance",
       "location": "",
       "services": "",
@@ -86,7 +86,7 @@
     },
     {
       "name": "ICICI Bank",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-icici-bank.svg",
       "sector": "Banking & Finance",
       "location": "",
       "services": "",
@@ -94,7 +94,7 @@
     },
     {
       "name": "ABB",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-abb.svg",
       "sector": "Engineering & Manufacturing",
       "location": "",
       "services": "",
@@ -102,7 +102,7 @@
     },
     {
       "name": "Pidilite Industries Ltd",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-pidilite.svg",
       "sector": "Engineering & Manufacturing",
       "location": "",
       "services": "",
@@ -110,7 +110,7 @@
     },
     {
       "name": "Sulzer Pumps India",
-      "logo": "",
+      "logo": "/images/uploads/client-logo-sulzer.svg",
       "sector": "Engineering & Manufacturing",
       "location": "",
       "services": "",
