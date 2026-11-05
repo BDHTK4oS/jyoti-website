@@ -1,4 +1,4 @@
-# Admin panel for the Jyoti Cab Rental website.
+# Admin panel for the JyotiCab.com website.
 # Log in at yoursite.com/admin. Each "Publish" saves the change and Netlify updates the live site in about a minute.
 backend:
   name: git-gateway
