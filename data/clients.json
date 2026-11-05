@@ -1,169 +1,209 @@
 {
   "show_section": true,
   "heading": "Companies we've driven for",
-  "intro": "Corporate teams across Kolkata and West Bengal trust us with their daily duties, guest pickups and outstation travel.",
+  "intro": "Leading pharmaceutical companies, banks, manufacturers, public bodies and international organisations trust us with staff travel, guest pickups and outstation duties across Kolkata and West Bengal.",
   "show_logos": true,
   "clients": [
     {
-      "name": "Sample Client 01",
-      "logo": "",
-      "sector": "Engineering",
-      "location": "Kolkata & Haldia",
-      "services": "Daily office duty, plant visits",
-      "since": "2016"
+      "name": "ITC Limited",
+      "logo": "/images/uploads/client-logo-itc.svg",
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 02",
+      "name": "Asian Paints",
       "logo": "",
-      "sector": "Pharma",
-      "location": "Salt Lake",
-      "services": "Airport transfers, guest pickups",
-      "since": "2017"
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 03",
+      "name": "Dabur India",
       "logo": "",
-      "sector": "Banking",
-      "location": "Park Street",
-      "services": "Executive travel",
-      "since": "2018"
+      "sector": "FMCG & Consumer",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 04",
+      "name": "Pfizer",
       "logo": "",
-      "sector": "IT & Software",
-      "location": "Sector V",
-      "services": "Staff late-night drops",
-      "since": "2019"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 05",
+      "name": "Johnson & Johnson",
       "logo": "",
-      "sector": "Hospitality",
-      "location": "New Town",
-      "services": "Guest transfers",
-      "since": "2020"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 06",
+      "name": "Abbott Healthcare",
       "logo": "",
-      "sector": "Steel & Metals",
-      "location": "Durgapur",
-      "services": "Outstation site visits",
-      "since": "2021"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 07",
+      "name": "Cipla Ltd",
       "logo": "",
-      "sector": "Healthcare",
-      "location": "EM Bypass",
-      "services": "Doctor and staff travel",
-      "since": "2022"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 08",
+      "name": "Dr. Reddy's Laboratories",
       "logo": "",
-      "sector": "Logistics",
-      "location": "Howrah",
-      "services": "Multi-site audits",
-      "since": "2023"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 09",
+      "name": "Zydus Healthcare",
       "logo": "",
-      "sector": "Education",
-      "location": "Kasba",
-      "services": "Event and visitor transport",
-      "since": "2024"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 10",
+      "name": "HDFC Bank",
       "logo": "",
-      "sector": "Consulting",
-      "location": "Camac Street",
-      "services": "Client meetings",
-      "since": "2016"
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 11",
+      "name": "ICICI Bank",
       "logo": "",
-      "sector": "Engineering",
-      "location": "Kolkata & Haldia",
-      "services": "Daily office duty, plant visits",
-      "since": "2017"
+      "sector": "Banking & Finance",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 12",
+      "name": "ABB",
       "logo": "",
-      "sector": "Pharma",
-      "location": "Salt Lake",
-      "services": "Airport transfers, guest pickups",
-      "since": "2018"
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 13",
+      "name": "Pidilite Industries Ltd",
       "logo": "",
-      "sector": "Banking",
-      "location": "Park Street",
-      "services": "Executive travel",
-      "since": "2019"
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 14",
+      "name": "Sulzer Pumps India",
       "logo": "",
-      "sector": "IT & Software",
-      "location": "Sector V",
-      "services": "Staff late-night drops",
-      "since": "2020"
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 15",
+      "name": "Vedanta",
       "logo": "",
-      "sector": "Hospitality",
-      "location": "New Town",
-      "services": "Guest transfers",
-      "since": "2021"
+      "sector": "Infrastructure & Mining",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 16",
+      "name": "Ajanta Pharma",
       "logo": "",
-      "sector": "Steel & Metals",
-      "location": "Durgapur",
-      "services": "Outstation site visits",
-      "since": "2022"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 17",
+      "name": "Aristo Pharmaceuticals",
       "logo": "",
-      "sector": "Healthcare",
-      "location": "EM Bypass",
-      "services": "Doctor and staff travel",
-      "since": "2023"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 18",
+      "name": "Bharat Serums and Vaccines",
       "logo": "",
-      "sector": "Logistics",
-      "location": "Howrah",
-      "services": "Multi-site audits",
-      "since": "2024"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 19",
+      "name": "Aksigen Hospital Care",
       "logo": "",
-      "sector": "Education",
-      "location": "Kasba",
-      "services": "Event and visitor transport",
-      "since": "2016"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
     },
     {
-      "name": "Sample Client 20",
+      "name": "Techno India DAMA Hospital",
       "logo": "",
-      "sector": "Consulting",
-      "location": "Camac Street",
-      "services": "Client meetings",
-      "since": "2017"
+      "sector": "Pharma & Healthcare",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Krishna Tissues Pvt Ltd",
+      "logo": "",
+      "sector": "Engineering & Manufacturing",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Adhunik Infrastructures",
+      "logo": "",
+      "sector": "Infrastructure & Mining",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "World Health Organization (WHO)",
+      "logo": "",
+      "sector": "Government & Public Bodies",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "West Bengal Pollution Control Board",
+      "logo": "",
+      "sector": "Government & Public Bodies",
+      "location": "",
+      "services": "",
+      "since": ""
+    },
+    {
+      "name": "Central Drugs Laboratory",
+      "logo": "",
+      "sector": "Government & Public Bodies",
+      "location": "",
+      "services": "",
+      "since": ""
     }
   ],
-  "sample_notice": "Sample content for testing. Replace with your real clients in the admin panel before launch."
+  "sample_notice": ""
 }
