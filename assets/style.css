@@ -422,3 +422,6 @@ table.rates { width: 100%; border-collapse: collapse; min-width: 620px; font-var
 .map-quick button:hover { border-color: var(--crimson); color: var(--crimson-ink); }
 .sample-note { display: inline-block; margin-bottom: 18px; padding: 8px 14px; border-radius: 8px; border: 1.5px dashed #c98a00; background: color-mix(in srgb, #f5a623 14%, var(--surface)); color: var(--ink); font-size: 0.88rem; font-weight: 600; }
 .foot-tag { color: #fff; font-weight: 600; font-style: italic; margin: -4px 0 10px; }
+.client.has-logo { grid-template-columns: 116px 1fr; }
+.client.has-logo .client-mark { width: 116px; height: 64px; padding: 8px 10px; }
+.client-mark img { filter: grayscale(1) contrast(1.1); opacity: .9; }
