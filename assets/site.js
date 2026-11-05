@@ -4,7 +4,7 @@
   "use strict";
 
   var FALLBACK = {
-    site: { business_name: "JyotiCab.com", phone_primary: "9830079505", phone_landline: "033-40040440", whatsapp: "9830079500", email: "jyoti_travels@yahoo.com", address: "2076, Rajdanga Main Road, Kasba, Kolkata - 700107", hours: "Open 24 hours, 7 days a week", gstin: "19AFUPB9582R2Z4", msme: "UDYAM-WB-10-0024483", map_link: "https://www.google.com/maps/search/?api=1&query=Rajdanga+Main+Road+Kasba+Kolkata", about_points: [] },
+    site: { business_name: "JyotiCab.com", phone_primary: "9830079505", phone_landline: "033-40040440", whatsapp: "9830079505", email: "jyoti_travels@yahoo.com", address: "2076, Rajdanga Main Road, Kasba, Kolkata - 700107", hours: "Open 24 hours, 7 days a week", gstin: "19AFUPB9582R2Z4", msme: "UDYAM-WB-10-0024483", map_link: "https://www.google.com/maps/search/?api=1&query=Rajdanga+Main+Road+Kasba+Kolkata", about_points: [] },
     fleet: { cars: [
       { name: "Dzire", category: "Sedan", shape: "sedan", seats: 4, bags: 2, package_price: 2000, extra_km: 20, extra_hour: 200 },
       { name: "Ertiga", category: "MPV", shape: "mpv", seats: 6, bags: 2, package_price: 2500, extra_km: 25, extra_hour: 250 },
