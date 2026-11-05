@@ -425,3 +425,4 @@ table.rates { width: 100%; border-collapse: collapse; min-width: 620px; font-var
 .client.has-logo { grid-template-columns: 116px 1fr; }
 .client.has-logo .client-mark { width: 116px; height: 64px; padding: 8px 10px; }
 .client-mark img { filter: grayscale(1) contrast(1.1); opacity: .9; }
+.client.has-logo .client-mark img { width: 100%; height: 48px; object-fit: contain; }
