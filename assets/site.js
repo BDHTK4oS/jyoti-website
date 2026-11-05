@@ -597,27 +597,26 @@
     }
   }
 
-  /* Email a copy of each enquiry to the office through FormSubmit (formsubmit.co).
-     Sent from the visitor's browser, because FormSubmit only accepts browser requests.
-     The address (or the private FormSubmit code that replaces it) is set in Admin > Site details. */
+  /* Email a copy of each enquiry to the office through Web3Forms (web3forms.com).
+     The access key is set in Admin > Site details; it can only send to the inbox it was created for. */
   var ALERT_LABELS = { enquiry_type: "Enquiry type", name: "Name", phone: "Phone", email: "Email", company: "Company", trip: "Trip type", car: "Car",
     date: "Date", time: "Reporting time", pickup: "Pickup address", drop: "Drop address", pickup_pin: "Pickup on map", drop_pin: "Drop on map", volume: "Cars per month", message: "Notes" };
   function emailAlert(form, site) {
-    var to = String(site.enquiry_alert || "").trim();
-    if (!to) return;
+    var key = String(site.enquiry_alert_key || "").trim();
+    if (!key) return;
     var fd = new FormData(form);
     if (fd.get("company_website")) return; // spam trap filled in
-    var out = {};
+    var who = [fd.get("name"), fd.get("phone")].filter(Boolean).join(", ");
+    var out = {
+      access_key: key,
+      subject: (form.getAttribute("name") === "corporate" ? "Corporate quote request" : "New booking enquiry") + (who ? " - " + who : "") + " | JyotiCab.com",
+      from_name: "JyotiCab.com website"
+    };
     Object.keys(ALERT_LABELS).forEach(function (k) { var v = fd.get(k); if (v) out[ALERT_LABELS[k]] = String(v).slice(0, 1500); });
     out["Page"] = location.href.split("?")[0];
-    var who = [fd.get("name"), fd.get("phone")].filter(Boolean).join(", ");
-    out._subject = (form.getAttribute("name") === "corporate" ? "Corporate quote request" : "New booking enquiry") + (who ? " - " + who : "") + " | JyotiCab.com";
-    out._template = "table"; out._captcha = "false";
-    if (fd.get("email")) out._replyto = fd.get("email");
+    if (fd.get("email")) out.replyto = fd.get("email");
     try {
-      var bodyParams = new URLSearchParams();
-      Object.keys(out).forEach(function (k) { bodyParams.append(k, out[k]); });
-      fetch("https://formsubmit.co/ajax/" + encodeURIComponent(to), { method: "POST", headers: { Accept: "application/json" }, body: bodyParams })
+      fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(out) })
         .then(function (r) { return r.json(); }).then(function (j) { window.__enquiryAlert = j; }).catch(function (e) { window.__enquiryAlert = String(e); });
     } catch (e) {}
   }
