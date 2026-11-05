@@ -465,3 +465,21 @@ table.rates { width: 100%; border-collapse: collapse; min-width: 620px; font-var
 .ps-km { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .ps-credit { margin: 0; padding: 6px 12px 8px; text-align: right; font-size: .72rem; color: var(--muted); border-top: 1px solid var(--line); }
 .field .opt { font-weight: 400; color: var(--muted); }
+
+/* Desktop call panel */
+.call-panel { position: fixed; inset: 0; z-index: 1300; display: grid; place-items: center; padding: 16px; background: rgba(3, 6, 63, .45); backdrop-filter: blur(3px); animation: cp-fade .2s ease; }
+.cp-card { position: relative; width: min(100%, 380px); background: var(--surface); color: var(--ink); border-radius: 18px; padding: 26px 24px 20px; box-shadow: 0 30px 70px -20px rgba(0, 2, 40, .6); border: 1px solid var(--line); text-align: center; animation: cp-pop .25s cubic-bezier(.2,.8,.2,1); }
+.cp-x { position: absolute; top: 8px; right: 10px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.6rem; line-height: 1; cursor: pointer; }
+.cp-x:hover { background: color-mix(in srgb, var(--navy) 8%, transparent); }
+.cp-label { margin: 0; color: var(--muted); font-size: .9rem; }
+.cp-num { margin: 6px 0 18px; font: 800 2rem/1.1 var(--font-display); font-stretch: 112%; color: var(--navy); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.cp-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cp-actions .btn { width: 100%; padding-inline: 12px; }
+.cp-app { width: 100%; margin-top: 10px; background: var(--navy); color: #fff; }
+.cp-app:hover { background: #0a0f9c; }
+.cp-hint { margin: 10px 4px 0; font-size: .78rem; line-height: 1.45; color: var(--muted); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cp-num { color: #fff; } }
+:root[data-theme="dark"] .cp-num { color: #fff; }
+@media (max-width: 420px) { .cp-actions { grid-template-columns: 1fr; } }
+@keyframes cp-fade { from { opacity: 0; } }
+@keyframes cp-pop { from { opacity: 0; transform: translateY(12px) scale(.97); } }

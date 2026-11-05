@@ -863,6 +863,43 @@
     }
   }
 
+  /* ---------- Desktop call panel ----------
+     Phones dial "tel:" links directly. Most computers have no calling app, so there the
+     call buttons open a small panel with the number, copy, WhatsApp and "call from an app". */
+  function callPanel(site) {
+    var canDial = window.matchMedia && window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    if (canDial) return;
+    var box = null;
+    function close() { if (box) { box.remove(); box = null; document.removeEventListener("keydown", onKey); } }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="tel:"]');
+      if (!a || e.ctrlKey || e.metaKey) return;
+      e.preventDefault();
+      close();
+      var tel = a.getAttribute("href"), num = tel.replace(/^tel:/, ""), shown = a.textContent.trim() || num;
+      box = document.createElement("div");
+      box.className = "call-panel"; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Call JyotiCab.com");
+      box.innerHTML = '<div class="cp-card"><button type="button" class="cp-x" aria-label="Close">&times;</button>' +
+        '<p class="cp-label">Call us, 24 hours</p><p class="cp-num">' + esc(shown) + "</p>" +
+        '<div class="cp-actions"><button type="button" class="btn btn-primary cp-copy">Copy number</button>' +
+        '<a class="btn btn-ghost" href="' + esc(waLink(site, "Hello JyotiCab.com, I'd like to book a cab.")) + '" target="_blank" rel="noopener">Chat on WhatsApp</a></div>' +
+        '<a class="btn btn-call-phone cp-app" href="' + esc(tel) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>Call from my phone</a>' +
+        '<p class="cp-hint">Sends the call to your Android phone if Chrome is signed in to the same Google account, or opens Phone Link or another calling app.</p></div>';
+      document.body.appendChild(box);
+      box.addEventListener("click", function (ev) { if (ev.target === box || ev.target.closest(".cp-x")) close(); });
+      box.querySelector(".cp-app").addEventListener("click", function () { setTimeout(close, 300); });
+      var copy = box.querySelector(".cp-copy");
+      copy.addEventListener("click", function () {
+        var done = function () { copy.textContent = "Copied"; setTimeout(function () { if (copy) copy.textContent = "Copy number"; }, 1800); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(shown).then(done, function () {});
+        else { var t = document.createElement("textarea"); t.value = shown; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (er) {} t.remove(); }
+      });
+      document.addEventListener("keydown", onKey);
+      copy.focus();
+    });
+  }
+
   /* ---------- Boot ---------- */
   Promise.all([getJSON("site"), getJSON("fleet"), getJSON("rates"), getJSON("reviews"), getJSON("clients")]).then(function (d) {
     var site = Object.assign({}, FALLBACK.site, d[0]);
@@ -892,6 +929,7 @@
     portfolio(site, cars.concat(extra), d[4] || {});
     var rv = document.querySelector("[data-reviews]"); if (rv) reviewsSection(rv, d[3] || {});
     enquiryForm(cars, site, extra);
+    callPanel(site);
     heroIntro();
     dutyLine();
   });
