@@ -1,0 +1,60 @@
+{
+  "business_name": "Jyoti Cab Rental",
+  "tagline": "Chauffeur-driven cabs for Kolkata's companies and travellers",
+  "phone_primary": "9830079505",
+  "phone_landline": "033-40040440",
+  "whatsapp": "9830079500",
+  "email": "jyoti_travels@yahoo.com",
+  "address": "2076, Rajdanga Main Road, Kasba, Kolkata - 700107",
+  "map_link": "https://www.google.com/maps/search/?api=1&query=2076+Rajdanga+Main+Road+Kasba+Kolkata+700107",
+  "hours": "Open 24 hours, 7 days a week",
+  "gstin": "19AFUPB9582R2Z4",
+  "msme": "UDYAM-WB-10-0024483",
+  "about_headline": "A Kolkata cab company built around the duty slip.",
+  "about_intro": "Jyoti Cab Rental provides chauffeur-driven cars from our base in Kasba, Kolkata, for companies, families and travellers who need a car they can rely on.",
+  "about_body": "We started with a simple idea: a cab bill should be easy to check. Every duty we run is measured garage-out to garage-in, written on a duty slip that your traveller fills in by hand, and charged on the hours or kilometres actually used. No hidden add-ons, and no arguments at the end of the month.\n\nToday we look after daily office duties for companies across Kolkata, airport pickups and drops at any hour, and outstation trips to plants, project sites and holiday destinations across West Bengal and neighbouring states. Our fleet runs from the everyday Dzire to the Innova Hycross for leadership travel and guests.\n\nOur drivers are experienced, courteous and know the city's roads, from Sector V and New Town to Howrah, Behala and the airport. Cars are cleaned before every duty and serviced on schedule. If a car develops a problem on the road, we send a replacement as quickly as traffic allows.\n\nFor companies, we work the way your accounts team does: contract rates, GST invoices after each duty or on a weekly, fortnightly or monthly cycle, and one number to call for every booking or change.",
+  "about_points": [
+    {
+      "title": "Billing you can check",
+      "text": "Reporting and release time and kilometres are written on the duty slip in your traveller's own handwriting."
+    },
+    {
+      "title": "Charged on actual use",
+      "text": "Extra hours or extra kilometres beyond the package, whichever is higher. Never both."
+    },
+    {
+      "title": "Registered and compliant",
+      "text": "GST-registered and Udyam (MSME) registered, with a proper GST invoice for every duty."
+    },
+    {
+      "title": "One point of contact",
+      "text": "Call, WhatsApp or email the same team for bookings, changes and billing questions, any time of day."
+    }
+  ],
+  "find_us_text": "Our office and garage are on Rajdanga Main Road in Kasba, a few minutes from the EM Bypass. Every duty starts and ends here.",
+  "founded_year": "",
+  "highlights": [
+    {
+      "value": "24×7",
+      "label": "Bookings, airport runs and late releases, every day of the year"
+    },
+    {
+      "value": "Kasba",
+      "label": "Garage and office in Kolkata, serving West Bengal and neighbouring states"
+    }
+  ],
+  "credentials": [
+    {
+      "title": "GST registered",
+      "detail": "GSTIN 19AFUPB9582R2Z4. GST invoice for every duty."
+    },
+    {
+      "title": "Udyam (MSME) registered",
+      "detail": "UDYAM-WB-10-0024483"
+    },
+    {
+      "title": "Signed duty slips",
+      "detail": "Reporting and release readings written by your traveller, attached to every invoice."
+    }
+  ]
+}

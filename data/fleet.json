@@ -1,0 +1,9 @@
+{
+  "cars": [
+    { "name": "Dzire", "category": "Sedan", "shape": "sedan", "seats": 4, "bags": 2, "package_price": 2000, "extra_km": 20, "extra_hour": 200, "best_for": "Daily office duty, airport runs, city meetings", "photo": "" },
+    { "name": "Ertiga", "category": "MPV", "shape": "mpv", "seats": 6, "bags": 2, "package_price": 2500, "extra_km": 25, "extra_hour": 250, "best_for": "Small teams and families on a budget", "photo": "" },
+    { "name": "Innova", "category": "MPV", "shape": "mpv", "seats": 7, "bags": 3, "package_price": 2500, "extra_km": 25, "extra_hour": 250, "best_for": "Site visits, group travel, outstation trips", "photo": "" },
+    { "name": "Innova Crysta", "category": "Premium MPV", "shape": "mpv", "seats": 6, "bags": 4, "package_price": 3200, "extra_km": 32, "extra_hour": 320, "best_for": "Senior executives, long outstation tours", "photo": "" },
+    { "name": "Innova Hycross", "category": "Luxury MPV", "shape": "mpv", "seats": 6, "bags": 4, "package_price": 4800, "extra_km": 48, "extra_hour": 480, "best_for": "VIP guests, leadership travel, events", "photo": "" }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "package_hours": 10,
+  "package_km": 100,
+  "night_after_11pm": 300,
+  "early_before_6am": 200,
+  "outstation_km_per_day": 200,
+  "outstation_charge_per_day": 500,
+  "driver_lodging_per_night": 1500,
+  "office_lat": 22.5133,
+  "office_lng": 88.3919,
+  "garage_km_buffer": 2,
+  "traffic_factor": 2.0,
+  "time_rounding_minutes": 15,
+  "terms": [
+    "Hours and kilometres are counted garage-out to garage-in, from and back to our Kasba office.",
+    "Extra kilometres or extra hours beyond the package are charged, whichever comes to more.",
+    "Please write the reporting time and kilometres, and the release time and kilometres, on the duty slip in your own handwriting.",
+    "Within the city, a driver overtime charge applies after 11 pm and before 6 am.",
+    "Outstation trips carry a daily charge when the distance exceeds 200 km a day.",
+    "For overnight outstation trips, please arrange the driver's food and stay. If not arranged, a per-night charge applies.",
+    "Interstate taxes, tolls, parking and applicable taxes are paid by the customer.",
+    "Local bookings are paid when the car is released. Corporate billing follows your contract.",
+    "Online fares are estimates. The invoice is based on actual usage recorded on the duty slip.",
+    "Rates may be revised with a rise in fuel prices, by mutual agreement."
+  ]
+}

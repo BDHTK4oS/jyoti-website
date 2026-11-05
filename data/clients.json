@@ -1,0 +1,169 @@
+{
+  "show_section": true,
+  "heading": "Companies we've driven for",
+  "intro": "Corporate teams across Kolkata and West Bengal trust us with their daily duties, guest pickups and outstation travel.",
+  "show_logos": true,
+  "clients": [
+    {
+      "name": "Sample Client 01",
+      "logo": "",
+      "sector": "Engineering",
+      "location": "Kolkata & Haldia",
+      "services": "Daily office duty, plant visits",
+      "since": "2016"
+    },
+    {
+      "name": "Sample Client 02",
+      "logo": "",
+      "sector": "Pharma",
+      "location": "Salt Lake",
+      "services": "Airport transfers, guest pickups",
+      "since": "2017"
+    },
+    {
+      "name": "Sample Client 03",
+      "logo": "",
+      "sector": "Banking",
+      "location": "Park Street",
+      "services": "Executive travel",
+      "since": "2018"
+    },
+    {
+      "name": "Sample Client 04",
+      "logo": "",
+      "sector": "IT & Software",
+      "location": "Sector V",
+      "services": "Staff late-night drops",
+      "since": "2019"
+    },
+    {
+      "name": "Sample Client 05",
+      "logo": "",
+      "sector": "Hospitality",
+      "location": "New Town",
+      "services": "Guest transfers",
+      "since": "2020"
+    },
+    {
+      "name": "Sample Client 06",
+      "logo": "",
+      "sector": "Steel & Metals",
+      "location": "Durgapur",
+      "services": "Outstation site visits",
+      "since": "2021"
+    },
+    {
+      "name": "Sample Client 07",
+      "logo": "",
+      "sector": "Healthcare",
+      "location": "EM Bypass",
+      "services": "Doctor and staff travel",
+      "since": "2022"
+    },
+    {
+      "name": "Sample Client 08",
+      "logo": "",
+      "sector": "Logistics",
+      "location": "Howrah",
+      "services": "Multi-site audits",
+      "since": "2023"
+    },
+    {
+      "name": "Sample Client 09",
+      "logo": "",
+      "sector": "Education",
+      "location": "Kasba",
+      "services": "Event and visitor transport",
+      "since": "2024"
+    },
+    {
+      "name": "Sample Client 10",
+      "logo": "",
+      "sector": "Consulting",
+      "location": "Camac Street",
+      "services": "Client meetings",
+      "since": "2016"
+    },
+    {
+      "name": "Sample Client 11",
+      "logo": "",
+      "sector": "Engineering",
+      "location": "Kolkata & Haldia",
+      "services": "Daily office duty, plant visits",
+      "since": "2017"
+    },
+    {
+      "name": "Sample Client 12",
+      "logo": "",
+      "sector": "Pharma",
+      "location": "Salt Lake",
+      "services": "Airport transfers, guest pickups",
+      "since": "2018"
+    },
+    {
+      "name": "Sample Client 13",
+      "logo": "",
+      "sector": "Banking",
+      "location": "Park Street",
+      "services": "Executive travel",
+      "since": "2019"
+    },
+    {
+      "name": "Sample Client 14",
+      "logo": "",
+      "sector": "IT & Software",
+      "location": "Sector V",
+      "services": "Staff late-night drops",
+      "since": "2020"
+    },
+    {
+      "name": "Sample Client 15",
+      "logo": "",
+      "sector": "Hospitality",
+      "location": "New Town",
+      "services": "Guest transfers",
+      "since": "2021"
+    },
+    {
+      "name": "Sample Client 16",
+      "logo": "",
+      "sector": "Steel & Metals",
+      "location": "Durgapur",
+      "services": "Outstation site visits",
+      "since": "2022"
+    },
+    {
+      "name": "Sample Client 17",
+      "logo": "",
+      "sector": "Healthcare",
+      "location": "EM Bypass",
+      "services": "Doctor and staff travel",
+      "since": "2023"
+    },
+    {
+      "name": "Sample Client 18",
+      "logo": "",
+      "sector": "Logistics",
+      "location": "Howrah",
+      "services": "Multi-site audits",
+      "since": "2024"
+    },
+    {
+      "name": "Sample Client 19",
+      "logo": "",
+      "sector": "Education",
+      "location": "Kasba",
+      "services": "Event and visitor transport",
+      "since": "2016"
+    },
+    {
+      "name": "Sample Client 20",
+      "logo": "",
+      "sector": "Consulting",
+      "location": "Camac Street",
+      "services": "Client meetings",
+      "since": "2017"
+    }
+  ],
+  "sample_notice": "Sample content for testing. Replace with your real clients in the admin panel before launch."
+}
