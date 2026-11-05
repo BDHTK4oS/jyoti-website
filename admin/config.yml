@@ -39,6 +39,23 @@ collections:
               - { name: extra_km, label: "Extra km rate (₹ per km)", widget: number, value_type: int, min: 0 }
               - { name: extra_hour, label: "Extra hour rate (₹ per hour)", widget: number, value_type: int, min: 0 }
               - { name: best_for, label: "Best for (one short line)", widget: string, required: false }
+          - { name: on_request_heading, label: "Cars on request – heading", widget: string, required: false, default: "More cars on request" }
+          - { name: on_request_intro, label: "Cars on request – short note", widget: text, required: false }
+          - name: on_request
+            label: Cars on request (no fixed price)
+            label_singular: car on request
+            hint: "Cars you can arrange through partner operators. They show on Fleet & rates with 'Price on request' and in the booking form, but not in the fare calculator. Remove any you can't supply."
+            widget: list
+            collapsed: true
+            required: false
+            summary: "{{fields.name}} – {{fields.category}}"
+            fields:
+              - { name: name, label: "Vehicle name", widget: string }
+              - { name: category, label: "Vehicle type", widget: string, hint: "Cars with the same type are grouped together, e.g. Sedan, SUV, Luxury, Group travel" }
+              - { name: shape, label: "Drawing style", widget: select, options: [ { label: "Sedan", value: sedan }, { label: "MPV / SUV / van", value: mpv } ], default: mpv }
+              - { name: seats, label: "Passenger seats", widget: number, value_type: int, min: 1 }
+              - { name: bags, label: "Bags it can carry (0 hides it)", widget: number, value_type: int, min: 0, required: false }
+              - { name: best_for, label: "Best for (one short line)", widget: string, required: false }
 
       - name: rates
         label: Package, charges and terms
