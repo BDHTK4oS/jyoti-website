@@ -1,10 +1,10 @@
-/* Jyoti Cab Rental — shared site script.
+/* JyotiCab.com — shared site script.
    Content (rates, fleet, contact details, About text) comes from /data/*.json, which the admin panel edits. */
 (function () {
   "use strict";
 
   var FALLBACK = {
-    site: { business_name: "Jyoti Cab Rental", phone_primary: "9830079505", phone_landline: "033-40040440", whatsapp: "9830079500", email: "jyoti_travels@yahoo.com", address: "2076, Rajdanga Main Road, Kasba, Kolkata - 700107", hours: "Open 24 hours, 7 days a week", gstin: "19AFUPB9582R2Z4", msme: "UDYAM-WB-10-0024483", map_link: "https://www.google.com/maps/search/?api=1&query=Rajdanga+Main+Road+Kasba+Kolkata", about_points: [] },
+    site: { business_name: "JyotiCab.com", phone_primary: "9830079505", phone_landline: "033-40040440", whatsapp: "9830079500", email: "jyoti_travels@yahoo.com", address: "2076, Rajdanga Main Road, Kasba, Kolkata - 700107", hours: "Open 24 hours, 7 days a week", gstin: "19AFUPB9582R2Z4", msme: "UDYAM-WB-10-0024483", map_link: "https://www.google.com/maps/search/?api=1&query=Rajdanga+Main+Road+Kasba+Kolkata", about_points: [] },
     fleet: { cars: [
       { name: "Dzire", category: "Sedan", shape: "sedan", seats: 4, bags: 2, package_price: 2000, extra_km: 20, extra_hour: 200 },
       { name: "Ertiga", category: "MPV", shape: "mpv", seats: 6, bags: 2, package_price: 2500, extra_km: 25, extra_hour: 250 },
@@ -149,8 +149,8 @@
     var links = PAGES.map(function (p) { return '<a href="' + p[0] + '"' + (p[0] === here ? ' aria-current="page"' : "") + ">" + p[1] + "</a>"; }).join("");
     return '<div class="wrap">' +
       '<a class="brand" href="index.html" aria-label="' + esc(site.business_name) + ' home">' +
-      '<img class="logo-dark" src="assets/logo.png" alt="' + esc(site.business_name) + '" width="176" height="44">' +
-      '<img class="logo-light" src="assets/logo-light.png" alt="" width="176" height="44"></a>' +
+      '<img class="logo-dark" src="assets/logo.png" alt="' + esc(site.business_name) + '" width="170" height="44">' +
+      '<img class="logo-light" src="assets/logo-light.png" alt="" width="170" height="44"></a>' +
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>' +
       '<nav class="nav" id="site-nav" aria-label="Main">' + links + "</nav>" +
       '<div class="header-call"><a class="btn btn-primary btn-sm" href="tel:' + digits(site.phone_primary) + '">' + ICON.phone + esc(site.phone_primary) + "</a></div></div>";
@@ -158,7 +158,7 @@
 
   function footer(site) {
     return '<div class="wrap">' +
-      "<div><h3>" + esc(site.business_name) + "</h3><p>" + esc(site.address) + '</p><p style="margin-top:8px">' + esc(site.hours) + "</p></div>" +
+      "<div><h3>" + esc(site.business_name) + "</h3>" + (site.tagline ? '<p class="foot-tag">' + esc(site.tagline) + "</p>" : "") + "<p>" + esc(site.address) + '</p><p style="margin-top:8px">' + esc(site.hours) + "</p></div>" +
       "<div><h3>Talk to us</h3><ul>" +
       '<li><a href="tel:' + digits(site.phone_primary) + '">' + esc(site.phone_primary) + "</a></li>" +
       '<li><a href="tel:' + digits(site.phone_landline) + '">' + esc(site.phone_landline) + "</a></li>" +
@@ -454,7 +454,7 @@
         res.querySelector(".est-lines").innerHTML = (garage ? "" : '<div class="est-warn"><dt>Pickup not pinned yet</dt><dd>Garage travel not included</dd></div>') +
           r.lines.map(function (l) { return '<div class="' + (l.info ? "info" : "") + '"><dt>' + esc(l.label) + "</dt><dd>" + (l.info ? esc(l.value) : inr(l.amount)) + "</dd></div>"; }).join("");
         var trip = state.type === "local" ? "local duty, " + val("hours") + " hrs / " + val("km") + " km" : "outstation, " + val("days") + " days / " + val("trip") + " km";
-        var msg = "Hello Jyoti Cab Rental, I'd like to book: " + car.name + ", " + trip + ". Website estimate " + inr(r.total) + "." +
+        var msg = "Hello JyotiCab.com, I'd like to book: " + car.name + ", " + trip + ". Website estimate " + inr(r.total) + "." +
           (p ? "\nPickup: " + gmaps(p) : "") + (d ? "\n" + picker.dropWord + ": " + gmaps(d) : "");
         res.querySelector(".est-wa").href = waLink(site, msg);
         res.querySelector(".est-book").href = "contact.html?car=" + encodeURIComponent(car.name) + "&trip=" + state.type + (p ? "&pickup=" + p.lat.toFixed(5) + "," + p.lng.toFixed(5) : "") + (d ? "&drop=" + d.lat.toFixed(5) + "," + d.lng.toFixed(5) : "");
@@ -676,7 +676,7 @@
     var f = document.querySelector(".site-footer"); if (f) f.innerHTML = footer(site);
     var btn = document.querySelector(".menu-btn"), nav = document.getElementById("site-nav");
     if (btn) btn.addEventListener("click", function () { var o = nav.classList.toggle("open"); btn.setAttribute("aria-expanded", o); });
-    var wa = document.querySelector(".wa-float"); if (wa) wa.href = waLink(site, "Hello Jyoti Cab Rental, I'd like to book a cab.");
+    var wa = document.querySelector(".wa-float"); if (wa) wa.href = waLink(site, "Hello JyotiCab.com, I'd like to book a cab.");
     bindText(site);
 
     var fg = document.querySelector("[data-fleet]"); if (fg) fleetCards(fg, cars, n(fg.getAttribute("data-fleet"), 0) || cars.length);
