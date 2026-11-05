@@ -1,0 +1,154 @@
+# Admin panel for the Jyoti Cab Rental website.
+# Log in at yoursite.com/admin. Each "Publish" saves the change and Netlify updates the live site in about a minute.
+backend:
+  name: git-gateway
+  branch: main
+
+site_url: https://jyotitravels.com
+display_url: https://jyotitravels.com
+logo_url: /assets/logo.png
+media_folder: images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: settings
+    label: Website content
+    editor:
+      preview: false
+    files:
+      - name: fleet
+        label: Vehicles and their rates
+        file: data/fleet.json
+        format: json
+        fields:
+          - name: cars
+            label: Vehicles
+            label_singular: vehicle
+            hint: "Use 'Add vehicle' to add a new car type. Drag to change the order shown on the website. Delete a vehicle to remove it from the site and the calculator."
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}} – ₹{{fields.package_price}} package"
+            fields:
+              - { name: name, label: "Vehicle name (shown on the website)", widget: string, hint: "e.g. Dzire, Innova Crysta, Tempo Traveller 12-seater" }
+              - { name: category, label: "Vehicle type", widget: string, hint: "e.g. Sedan, SUV, MPV, Premium MPV, Luxury MPV, Tempo Traveller" }
+              - { name: shape, label: "Drawing style (used when there is no photo)", widget: select, options: [ { label: "Sedan", value: sedan }, { label: "MPV / SUV / van", value: mpv } ], default: mpv }
+              - { name: photo, label: "Photo (optional, landscape, side view looks best)", widget: image, required: false }
+              - { name: seats, label: "Passenger seats", widget: number, value_type: int, min: 1 }
+              - { name: bags, label: "Bags it can carry", widget: number, value_type: int, min: 0 }
+              - { name: package_price, label: "Package price for the duty (₹)", widget: number, value_type: int, min: 0 }
+              - { name: extra_km, label: "Extra km rate (₹ per km)", widget: number, value_type: int, min: 0 }
+              - { name: extra_hour, label: "Extra hour rate (₹ per hour)", widget: number, value_type: int, min: 0 }
+              - { name: best_for, label: "Best for (one short line)", widget: string, required: false }
+
+      - name: rates
+        label: Package, charges and terms
+        file: data/rates.json
+        format: json
+        fields:
+          - { name: package_hours, label: "Package hours per duty", widget: number, value_type: int, min: 1 }
+          - { name: package_km, label: "Package kilometres per duty", widget: number, value_type: int, min: 1 }
+          - { name: night_after_11pm, label: "Driver charge after 11 pm (₹)", widget: number, value_type: int, min: 0 }
+          - { name: early_before_6am, label: "Driver charge before 6 am (₹)", widget: number, value_type: int, min: 0 }
+          - { name: outstation_km_per_day, label: "Outstation charge applies above (km per day)", widget: number, value_type: int, min: 0 }
+          - { name: outstation_charge_per_day, label: "Outstation charge per day (₹)", widget: number, value_type: int, min: 0 }
+          - { name: driver_lodging_per_night, label: "Driver food & stay per night, if not arranged (₹)", widget: number, value_type: int, min: 0 }
+          - { name: terms, label: "Terms and conditions (shown on Fleet & rates)", widget: list, field: { name: term, label: Term, widget: text } }
+          - { name: office_lat, label: "Garage location – latitude", widget: number, value_type: float, hint: "Where every duty starts and ends. In Google Maps, right-click your garage and click the numbers to copy them. The first number is latitude." }
+          - { name: office_lng, label: "Garage location – longitude", widget: number, value_type: float, hint: "The second number from Google Maps." }
+          - { name: garage_km_buffer, label: "Extra km added to each garage leg", widget: number, value_type: int, min: 0, hint: "Added to garage-out and to garage-in. 2 means 4 km in total." }
+          - { name: traffic_factor, label: "Traffic factor for drive time", widget: number, value_type: float, min: 1, step: 0.1, hint: "Map times assume empty roads. 2 means twice the empty-road time, which suits Kolkata daytime traffic. Raise it if estimates come out short, lower it for night trips." }
+          - { name: time_rounding_minutes, label: "Round duty time up to the nearest (minutes)", widget: number, value_type: int, min: 1, hint: "15 rounds up to the next quarter hour." }
+
+      - name: site
+        label: Contact details and About page
+        file: data/site.json
+        format: json
+        fields:
+          - { name: business_name, label: "Business name", widget: string }
+          - { name: tagline, label: "Tagline", widget: string }
+          - { name: phone_primary, label: "Mobile number", widget: string }
+          - { name: phone_landline, label: "Landline", widget: string }
+          - { name: whatsapp, label: "WhatsApp number (10 digits)", widget: string, pattern: ['^[0-9]{10}$', "Enter 10 digits, no spaces"] }
+          - { name: email, label: "Email", widget: string }
+          - { name: address, label: "Address", widget: text }
+          - { name: map_link, label: "Google Maps link", widget: string }
+          - { name: hours, label: "Opening hours", widget: string }
+          - { name: gstin, label: "GSTIN", widget: string }
+          - { name: msme, label: "Udyam / MSME number", widget: string }
+          - { name: founded_year, label: "Year founded (optional)", widget: string, required: false, hint: "Shown as 'Since 20XX' on the About page. Leave empty to hide." }
+          - { name: about_headline, label: "About page – headline", widget: string }
+          - name: highlights
+            label: About page – highlight figures
+            label_singular: highlight
+            hint: "Big figure plus a short line, e.g. '24×7' / 'Open every day'. Fleet size and client count are added automatically."
+            widget: list
+            fields:
+              - { name: value, label: "Figure", widget: string }
+              - { name: label, label: "Line under it", widget: string }
+          - name: credentials
+            label: About page – credentials and registrations
+            label_singular: credential
+            widget: list
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: detail, label: Detail, widget: text }
+          - { name: about_intro, label: "About page – intro under the headline", widget: text }
+          - { name: about_body, label: "About page – main text", widget: text, hint: "Leave a blank line between paragraphs." }
+          - name: about_points
+            label: About page – key points
+            label_singular: point
+            widget: list
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: text, label: Text, widget: text }
+          - { name: find_us_text, label: "About page – 'Find us' text", widget: text }
+
+      - name: reviews
+        label: Reviews
+        file: data/reviews.json
+        format: json
+        fields:
+          - { name: show_section, label: "Show the reviews section on the home page", widget: boolean, default: true }
+          - { name: sample_notice, label: "Sample notice (delete this text once real reviews are in)", widget: string, required: false }
+          - { name: google_maps_url, label: "Link to your Google listing", widget: string, required: false, hint: "Open your business on Google Maps, click Share, copy the link and paste it here. Used for the 'Read all reviews on Google' button." }
+          - { name: write_review_url, label: "Link for customers to write a review", widget: string, required: false, hint: "In your Google Business Profile, click 'Ask for reviews' and copy the link." }
+          - { name: rating, label: "Average rating (only used if live Google reviews aren't connected)", widget: string, required: false, hint: "e.g. 4.8" }
+          - { name: review_count, label: "Number of Google reviews (only used if live reviews aren't connected)", widget: string, required: false }
+          - { name: min_stars, label: "Show reviews with at least this many stars", widget: select, options: ["5", "4", "3"], default: "5" }
+          - name: reviews
+            label: Reviews added by hand
+            label_singular: review
+            hint: "Copy real reviews from your Google listing. These show alongside live Google reviews."
+            widget: list
+            collapsed: true
+            summary: "{{fields.author}} – {{fields.stars}}★"
+            fields:
+              - { name: author, label: "Customer name (as shown on Google)", widget: string }
+              - { name: stars, label: "Stars", widget: select, options: ["5", "4", "3", "2", "1"], default: "5" }
+              - { name: text, label: "Review text", widget: text }
+              - { name: when, label: "When (e.g. 2 months ago, or March 2026)", widget: string, required: false }
+
+      - name: clients
+        label: Client list
+        file: data/clients.json
+        format: json
+        fields:
+          - { name: show_section, label: "Show the client list on the website", widget: boolean, default: true }
+          - { name: sample_notice, label: "Sample notice (delete this text once real clients are in)", widget: string, required: false }
+          - { name: heading, label: "Heading", widget: string }
+          - { name: intro, label: "Intro line", widget: text }
+          - { name: show_logos, label: "Show client logos (when uploaded)", widget: boolean, default: true, hint: "Turn off to show names only. Ask clients before using their logo." }
+          - name: clients
+            label: Clients
+            label_singular: client
+            hint: "Add one entry per company. Drag to change the order; the first 8 also appear on the Corporate page."
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}} – {{fields.sector}}"
+            fields:
+              - { name: name, label: "Company name", widget: string }
+              - { name: logo, label: "Logo (optional, PNG or SVG with transparent background)", widget: image, required: false }
+              - { name: sector, label: "Industry", widget: string, required: false, hint: "e.g. Engineering, Pharma, Banking, IT, Hospitality. Used for the filter buttons." }
+              - { name: location, label: "Where we serve them", widget: string, required: false, hint: "e.g. Kolkata & Haldia" }
+              - { name: services, label: "What we do for them", widget: string, required: false, hint: "e.g. Daily office duty, airport transfers" }
+              - { name: since, label: "Client since (year)", widget: string, required: false }
