@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+# Rates and content change from the admin panel; make browsers fetch the latest copy.
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "no-cache"

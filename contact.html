@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact &amp; Booking | Jyoti Cab Rental</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Book a cab or send an enquiry to Jyoti Cab Rental, Kasba, Kolkata. Call 9830079505 or WhatsApp 9830079500.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<script>
+  /* Netlify Identity: only needed when an admin invite or password-reset link lands here. */
+  if (/(invite|recovery|confirmation|email_change)_token|access_token/.test(location.hash)) {
+    var s = document.createElement("script"); s.src = "https://identity.netlify.com/v1/netlify-identity-widget.js";
+    s.onload = function () { netlifyIdentity.on("init", function (u) { if (!u) netlifyIdentity.on("login", function () { location.href = "/admin/"; }); }); };
+    document.head.appendChild(s);
+  }
+</script>
+</head>
+<body>
+<header class="site-header"></header>
+
+<main>
+<section class="page-hero">
+  <svg class="swoosh" viewBox="0 0 1200 420" aria-hidden="true" preserveAspectRatio="none"><path d="M-40 400 C 260 170, 760 70, 1240 170" stroke="#fe005b" stroke-width="10"/></svg>
+  <div class="wrap">
+    <h1><span class="line"><span>Book a cab</span></span></h1>
+    <p class="lede">Send your trip details and we call back to confirm the car and driver. For a car within the next few hours, call us directly.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" data-site="phone_primary" href="#">9830079505</a>
+      <a class="btn btn-ghost" data-site="whatsapp" href="#" target="_blank" rel="noopener">9830079500</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap split">
+    <form class="form" id="enquiry" name="enquiry" method="POST" data-netlify="true" netlify-honeypot="company_website">
+      <input type="hidden" name="form-name" value="enquiry">
+      <input type="hidden" name="enquiry_type" value="Booking">
+      <p hidden><label>Leave this empty <input name="company_website"></label></p>
+      <h2 style="font-size:1.5rem">Trip details</h2>
+      <div class="form-grid">
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" required autocomplete="name"></div>
+        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" required autocomplete="tel" pattern="[0-9+\- ]{10,15}"></div>
+        <div class="field"><label for="f-trip">Trip type</label><select id="f-trip" name="trip"><option>Local duty</option><option>Airport transfer</option><option>Outstation</option><option>Corporate / regular</option></select></div>
+        <div class="field"><label for="f-car">Car</label><select id="f-car" name="car"></select></div>
+        <div class="field"><label for="f-date">Date</label><input id="f-date" name="date" type="date" required></div>
+        <div class="field"><label for="f-time">Reporting time</label><input id="f-time" name="time" type="time"></div>
+      </div>
+      <input type="hidden" id="f-pickup-pin" name="pickup_pin">
+      <input type="hidden" id="f-drop-pin" name="drop_pin">
+      <p class="note pin-note" hidden style="margin-top:0">Your map pins from the estimate are attached to this enquiry.</p>
+      <div class="field"><label for="f-pickup">Pickup address</label><input id="f-pickup" name="pickup" required autocomplete="street-address"></div>
+      <div class="field"><label for="f-msg">Destination and notes</label><textarea id="f-msg" name="message" placeholder="e.g. Drop at airport, flight 6E 512 at 2:40 pm"></textarea></div>
+      <div class="form-status" role="status" hidden></div>
+      <button class="btn btn-primary" type="submit">Send enquiry</button>
+      <p class="note" style="margin-top:0">This is an enquiry. Your booking is confirmed when we call you back.</p>
+    </form>
+
+    <div>
+      <h2>Contact</h2>
+      <dl class="contact-list" style="margin-top:20px">
+        <div><dt>Mobile</dt><dd><a data-site="phone_primary" href="#">9830079505</a></dd></div>
+        <div><dt>Landline</dt><dd><a data-site="phone_landline" href="#">033-40040440</a></dd></div>
+        <div><dt>WhatsApp</dt><dd><a data-site="whatsapp" href="#" target="_blank" rel="noopener">9830079500</a></dd></div>
+        <div><dt>Email</dt><dd><a data-site="email" href="#">jyoti_travels@yahoo.com</a></dd></div>
+        <div><dt>Office</dt><dd data-site="address">2076, Rajdanga Main Road, Kasba, Kolkata - 700107</dd></div>
+        <div><dt>Hours</dt><dd data-site="hours">Open 24 hours, 7 days a week</dd></div>
+      </dl>
+      <p class="note"><a data-site="map_link" href="#" target="_blank" rel="noopener">Open in Google Maps</a></p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer"></footer>
+<a class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.9-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg></a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>
