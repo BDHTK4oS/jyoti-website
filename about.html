@@ -52,8 +52,18 @@
       <h2 data-clients-heading>Companies we've driven for</h2>
       <p data-clients-intro></p>
     </div>
-    <div class="client-filters" role="group" aria-label="Filter clients by industry" hidden></div>
-    <ul class="client-wall" aria-live="polite"></ul>
+    <div class="client-marquee" data-marquee="2"></div>
+    <div class="mq-bar">
+      <div class="reviews-nav mq-nav" role="group" aria-label="Scroll client logos">
+        <button type="button" data-dir="prev" aria-label="Scroll logos left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button type="button" data-dir="next" aria-label="Scroll logos right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm client-toggle" aria-expanded="false" aria-controls="client-all">See all clients by industry</button>
+    </div>
+    <div class="client-all" id="client-all" hidden>
+      <div class="client-filters" role="group" aria-label="Filter clients by industry" hidden></div>
+      <ul class="client-wall" aria-live="polite"></ul>
+    </div>
   </div>
 </section>
 
