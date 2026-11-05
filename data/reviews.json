@@ -1,9 +1,9 @@
 {
   "show_section": true,
-  "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Jyoti+Cab+Rental+Rajdanga+Main+Road+Kasba+Kolkata",
-  "write_review_url": "",
-  "rating": "4.9",
-  "review_count": "48",
+  "google_maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJl-RzRtR2AjoROGXNr4n8I4g",
+  "write_review_url": "https://search.google.com/local/writereview?placeid=ChIJl-RzRtR2AjoROGXNr4n8I4g",
+  "rating": "4.0",
+  "review_count": "125",
   "min_stars": 5,
   "reviews": [
     {
@@ -43,5 +43,5 @@
       "when": "5 months ago"
     }
   ],
-  "sample_notice": "Sample reviews and rating for testing. Connect your Google listing or add real reviews in the admin panel before launch."
+  "sample_notice": "The review cards below are samples for testing. The rating above is your real Google rating. Live Google reviews replace these once connected."
 }
