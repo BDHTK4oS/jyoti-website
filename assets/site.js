@@ -219,6 +219,78 @@
     gsap.to(o, { v: value, duration: 0.6, ease: "power2.out", overwrite: true, onUpdate: function () { el.textContent = inr(o.v); } });
   }
 
+  /* ---------- Google place suggestions (via /.netlify/functions/places, key stays server-side) ---------- */
+  var placesOff = false;
+  function newSession() { return (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).replace(/[^a-z0-9]/g, ""); }
+  function PlaceSuggest(input, onPick) {
+    if (!input || input.dataset.suggest) return;
+    input.dataset.suggest = "1";
+    input.setAttribute("autocomplete", "off");
+    var host = input.parentNode; host.classList.add("ps-host");
+    var listId = (input.id || "ps") + "-suggest";
+    var box = document.createElement("div"); box.className = "place-suggest"; box.hidden = true;
+    box.innerHTML = '<ul role="listbox" id="' + listId + '"></ul><p class="ps-credit">Suggestions by Google</p>';
+    host.appendChild(box);
+    var ul = box.querySelector("ul");
+    input.setAttribute("role", "combobox"); input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", listId); input.setAttribute("aria-expanded", "false");
+    var session = newSession(), timer = 0, ctl = null, items = [], active = -1, lastQ = "";
+    function close() { box.hidden = true; input.setAttribute("aria-expanded", "false"); active = -1; input.removeAttribute("aria-activedescendant"); }
+    function mark(i) {
+      active = i;
+      ul.querySelectorAll("li").forEach(function (li, j) { li.setAttribute("aria-selected", j === i ? "true" : "false"); });
+      if (i >= 0) { input.setAttribute("aria-activedescendant", listId + "-" + i); var li = ul.children[i]; if (li && li.scrollIntoView) li.scrollIntoView({ block: "nearest" }); }
+    }
+    function render() {
+      if (!items.length) { close(); return; }
+      ul.innerHTML = items.map(function (it, i) {
+        return '<li role="option" id="' + listId + "-" + i + '" aria-selected="false" data-i="' + i + '"><span class="ps-pin" aria-hidden="true"></span><span class="ps-text"><b>' + esc(it.main) + "</b>" +
+          (it.secondary ? "<small>" + esc(it.secondary) + "</small>" : "") + "</span>" + (it.km != null ? '<span class="ps-km">' + (it.km < 10 ? it.km : Math.round(it.km)) + " km</span>" : "") + "</li>";
+      }).join("");
+      box.hidden = false; input.setAttribute("aria-expanded", "true"); active = -1;
+    }
+    function lookup(q) {
+      if (ctl) ctl.abort();
+      ctl = window.AbortController ? new AbortController() : null;
+      fetch("/.netlify/functions/places?q=" + encodeURIComponent(q) + "&s=" + session, ctl ? { signal: ctl.signal } : {})
+        .then(function (r) { if (!r.ok && r.status !== 502) throw new Error("off"); return r.json(); })
+        .then(function (d) {
+          if (d.configured === false) { placesOff = true; close(); return; }
+          if (q !== lastQ) return;
+          items = d.suggestions || []; render();
+        })
+        .catch(function (e) { if (e && e.name === "AbortError") return; placesOff = true; close(); });
+    }
+    function pick(i) {
+      var it = items[i]; if (!it) return;
+      input.value = it.secondary ? it.main + ", " + it.secondary : it.text || it.main;
+      close(); items = [];
+      var s = session; session = newSession();
+      fetch("/.netlify/functions/places?id=" + encodeURIComponent(it.id) + "&s=" + s)
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (d && isFinite(d.lat) && isFinite(d.lng)) onPick({ lat: +d.lat, lng: +d.lng, name: it.main, address: d.address || input.value }); })
+        .catch(function () {});
+    }
+    input.addEventListener("input", function () {
+      if (placesOff) return;
+      var q = input.value.trim(); lastQ = q;
+      clearTimeout(timer);
+      if (q.length < 3) { items = []; close(); return; }
+      timer = setTimeout(function () { lookup(q); }, 220);
+    });
+    input.addEventListener("keydown", function (e) {
+      if (box.hidden || !items.length) return;
+      if (e.key === "ArrowDown") { e.preventDefault(); mark((active + 1) % items.length); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); mark(active <= 0 ? items.length - 1 : active - 1); }
+      else if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); pick(active >= 0 ? active : 0); }
+      else if (e.key === "Escape") { close(); }
+    });
+    ul.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    ul.addEventListener("click", function (e) { var li = e.target.closest("li"); if (li) pick(+li.getAttribute("data-i")); });
+    input.addEventListener("blur", function () { setTimeout(close, 150); });
+    input.addEventListener("focus", function () { if (items.length && input.value.trim() === lastQ) render(); });
+  }
+
   /* ---------- Map (Leaflet + OpenStreetMap) ---------- */
   var QUICK_PLACES = [
     { name: "Kolkata Airport", lat: 22.6547, lng: 88.4467 },
@@ -305,6 +377,11 @@
         results.hidden = true; map.setView(ll, 15); place(self.mode, ll);
       };
     }
+    PlaceSuggest(el.querySelector('input[type="search"]'), function (pl) {
+      var ll = L.latLng(pl.lat, pl.lng); results.hidden = true; map.setView(ll, 15);
+      var kind = self.mode; place(kind, ll);
+      self.status.textContent = (kind === "pickup" ? "Pickup" : self.dropWord) + " set: " + pl.name + ". Drag the pin to fine-tune it.";
+    });
     el.querySelector(".map-search").addEventListener("submit", function (e) {
       e.preventDefault();
       var q = el.querySelector('input[type="search"]').value.trim(); if (!q) return;
@@ -487,15 +564,54 @@
       cars.map(function (c) { return "<tr><td>" + esc(c.name) + "</td><td>" + n(c.seats) + "</td><td>" + inr(n(c.package_price)) + "</td><td>" + inr(n(c.extra_km)) + "</td><td>" + inr(n(c.extra_hour)) + "</td></tr>"; }).join("") + "</tbody>";
   }
 
-  function enquiryForm(cars, site) {
+  function fleetExtra(sec, extra, data) {
+    if (!sec || !extra.length) return;
+    sec.hidden = false;
+    var h = sec.querySelector("[data-extra-heading]"), p = sec.querySelector("[data-extra-intro]");
+    if (h && data.on_request_heading) h.textContent = data.on_request_heading;
+    if (p && data.on_request_intro) p.textContent = data.on_request_intro;
+    var cats = [];
+    extra.forEach(function (c) { var k = c.category || "Other"; if (cats.indexOf(k) < 0) cats.push(k); });
+    var grid = sec.querySelector(".more-grid"), fil = sec.querySelector(".more-filters");
+    grid.innerHTML = extra.map(function (c) {
+      var b = n(c.bags);
+      return '<article class="car car-req" data-cat="' + esc(c.category || "Other") + '"><div class="car-art">' + carArt({ name: c.name, category: c.category, shape: c.shape }) + "</div>" +
+        "<div><h3>" + esc(c.name) + '</h3><div class="car-cat">' + esc(c.category || "") + "</div></div>" +
+        '<div class="car-specs"><span>' + n(c.seats) + " seats</span>" + (b ? "<span>" + b + " bags</span>" : "") + "<span>AC</span></div>" +
+        (c.best_for ? '<p class="car-cat">' + esc(c.best_for) + "</p>" : "") +
+        '<div class="car-price"><span>Price</span><strong class="on-req">On request</strong></div>' +
+        '<a class="req-link" href="contact.html?car=' + encodeURIComponent(c.name) + '#enquiry">Ask for this car <span aria-hidden="true">&rarr;</span></a></article>';
+    }).join("");
+    if (fil && cats.length > 1) {
+      var count = function (k) { return extra.filter(function (c) { return (c.category || "Other") === k; }).length; };
+      fil.hidden = false;
+      fil.innerHTML = '<button type="button" aria-pressed="true" data-k="">All <span>' + extra.length + "</span></button>" +
+        cats.map(function (k) { return '<button type="button" aria-pressed="false" data-k="' + esc(k) + '">' + esc(k) + " <span>" + count(k) + "</span></button>"; }).join("");
+      fil.addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b) return;
+        fil.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        var k = b.getAttribute("data-k"), shown = [];
+        grid.querySelectorAll(".car-req").forEach(function (c) { var on = !k || c.getAttribute("data-cat") === k; c.hidden = !on; if (on) shown.push(c); });
+        if (hasGSAP() && !reduced()) gsap.fromTo(shown, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.03, ease: "power2.out", overwrite: true });
+      });
+    }
+  }
+
+  function enquiryForm(cars, site, extra) {
     var form = document.getElementById("enquiry");
     if (!form) return;
     var sel = form.querySelector("#f-car");
-    sel.innerHTML = '<option value="">Not sure yet</option>' + cars.map(function (c) { return '<option value="' + esc(c.name) + '">' + esc(c.name) + " (" + n(c.seats) + " seats)</option>"; }).join("");
+    var opt = function (c) { return '<option value="' + esc(c.name) + '">' + esc(c.name) + " (" + n(c.seats) + " seats)</option>"; };
+    sel.innerHTML = '<option value="">Not sure yet</option>' + (extra && extra.length
+      ? '<optgroup label="Our fleet">' + cars.map(opt).join("") + '</optgroup><optgroup label="On request">' + extra.map(opt).join("") + "</optgroup>"
+      : cars.map(opt).join(""));
     var params = new URLSearchParams(location.search);
     if (params.get("car")) sel.value = params.get("car");
     var t = form.querySelector("#f-trip"); if (t && params.get("trip")) t.value = params.get("trip") === "outstation" ? "Outstation" : "Local duty";
     var pu = form.querySelector("#f-pickup-pin"), dr = form.querySelector("#f-drop-pin");
+    var gm = function (pl) { return "https://www.google.com/maps?q=" + pl.lat.toFixed(6) + "," + pl.lng.toFixed(6); };
+    PlaceSuggest(form.querySelector("#f-pickup"), function (pl) { if (pu && !params.get("pickup")) pu.value = gm(pl); });
+    PlaceSuggest(form.querySelector("#f-drop"), function (pl) { if (dr && !params.get("drop")) dr.value = gm(pl); });
     if (pu && params.get("pickup")) pu.value = "https://www.google.com/maps?q=" + params.get("pickup");
     if (dr && params.get("drop")) dr.value = "https://www.google.com/maps?q=" + params.get("drop");
     var pinNote = form.querySelector(".pin-note"); if (pinNote && params.get("pickup")) pinNote.hidden = false;
@@ -657,7 +773,7 @@
 
     var hl = document.querySelector("[data-highlights]");
     if (hl) {
-      var items = [{ value: String(cars.length), label: "Car types, from sedan to luxury MPV" }];
+      var items = [{ value: String(cars.length), label: cars.length > 12 ? "Car types, from hatchbacks to 45-seater coaches" : "Car types, from sedan to luxury MPV" }];
       if (showClients && clients.length) items.push({ value: String(clients.length), label: clients.length === 1 ? "Corporate client" : "Corporate clients served" });
       items = items.concat(site.highlights || []);
       hl.innerHTML = items.filter(function (h) { return h && h.value; }).map(function (h) {
@@ -727,6 +843,7 @@
     var site = Object.assign({}, FALLBACK.site, d[0]);
     var cars = (d[1] && d[1].cars && d[1].cars.length ? d[1].cars : FALLBACK.fleet.cars).filter(function (c) { return c && c.name; });
     var rates = Object.assign({}, FALLBACK.rates, d[2]);
+    var extra = (d[1] && Array.isArray(d[1].on_request) ? d[1].on_request : []).filter(function (c) { return c && c.name; });
     var h = document.querySelector(".site-header"); if (h) h.innerHTML = header(site);
     var f = document.querySelector(".site-footer"); if (f) f.innerHTML = footer(site);
     var btn = document.querySelector(".menu-btn"), nav = document.getElementById("site-nav");
@@ -735,6 +852,7 @@
     bindText(site);
 
     var fg = document.querySelector("[data-fleet]"); if (fg) fleetCards(fg, cars, n(fg.getAttribute("data-fleet"), 0) || cars.length);
+    fleetExtra(document.querySelector("[data-fleet-extra]"), extra, d[1] || {});
     var rt = document.querySelector("table.rates"); if (rt) rateTable(rt, cars, rates);
     var tl = document.querySelector("[data-terms]"); if (tl) tl.innerHTML = (rates.terms || []).map(function (t) { return "<li><span>" + esc(t) + "</span></li>"; }).join("");
     var ap = document.querySelector("[data-about-points]"); if (ap) ap.innerHTML = (site.about_points || []).map(function (p) { return "<div><h3>" + esc(p.title) + "</h3><p>" + esc(p.text) + "</p></div>"; }).join("");
@@ -746,9 +864,9 @@
     if (hero) new Estimator(hero, cars, rates, site, { compact: true, id: "h-", result: document.getElementById("hero-est-result") });
     var full = document.getElementById("calc-form");
     if (full) new Estimator(full, cars, rates, site, { compact: false, id: "c-", result: document.getElementById("calc-result") });
-    portfolio(site, cars, d[4] || {});
+    portfolio(site, cars.concat(extra), d[4] || {});
     var rv = document.querySelector("[data-reviews]"); if (rv) reviewsSection(rv, d[3] || {});
-    enquiryForm(cars, site);
+    enquiryForm(cars, site, extra);
     heroIntro();
     dutyLine();
   });

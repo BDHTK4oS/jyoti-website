@@ -71,12 +71,39 @@
     if (unique) unique(L, hero);
     swooshPulse(hero);
   }
+  /* The swoosh: once the red line has drawn itself in, a white line draws left to right over it,
+     then the red draws over the white, then white again, on a loop. */
   function swooshPulse(hero) {
-    var p = $(".swoosh path", hero); if (!p || RM) return;
-    var len = p.getTotalLength ? p.getTotalLength() : 1400;
-    var c = p.cloneNode(false); c.setAttribute("class", "fx-pulse"); c.setAttribute("stroke-width", "4");
-    c.style.strokeDasharray = "90 " + len; c.style.setProperty("--fx-l0", String(90)); c.style.setProperty("--fx-l1", String(-len));
-    p.parentNode.appendChild(c);
+    var base = $(".swoosh path", hero); if (!base || RM || !base.getTotalLength || !base.animate) return;
+    var svg = base.ownerSVGElement, len = base.getTotalLength(), tries = 0;
+    function mk(color, width, glow) {
+      var c = base.cloneNode(false);
+      c.removeAttribute("stroke-opacity"); c.setAttribute("class", "fx-swoosh-line");
+      c.setAttribute("stroke", color); c.setAttribute("stroke-width", width);
+      c.style.strokeDasharray = len + " " + len; c.style.strokeDashoffset = len;
+      c.style.filter = "drop-shadow(0 0 6px " + glow + ")";
+      return c;
+    }
+    function start() {
+      var white = mk("#ffffff", "5", "rgba(255,255,255,.75)"), red = mk("#fe005b", base.getAttribute("stroke-width") || "10", "rgba(254,0,91,.8)");
+      var order = [white, red], i = 0, vis = !document.hidden, onScreen = true;
+      document.addEventListener("visibilitychange", function () { vis = !document.hidden; });
+      if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { onScreen = es[0].isIntersecting; }).observe(hero);
+      (function next() {
+        if (!vis || !onScreen) { setTimeout(next, 800); return; }
+        var line = order[i % 2]; i++;
+        line.style.strokeDashoffset = len;
+        svg.appendChild(line);                       // the line now drawing sits on top
+        var a = line.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: 2200, easing: "cubic-bezier(.55,0,.25,1)", fill: "forwards" });
+        a.onfinish = function () { line.style.strokeDashoffset = 0; setTimeout(next, 900); };
+      })();
+    }
+    // Wait for the page's own intro to finish drawing the red line first
+    (function wait() {
+      var off = parseFloat(base.style.strokeDashoffset);
+      if ((base.style.strokeDashoffset !== "" && off < 1) || ++tries > 30) setTimeout(start, 500);
+      else setTimeout(wait, 200);
+    })();
   }
 
   /* Home: night-highway light streaks */

@@ -443,3 +443,25 @@ table.rates { width: 100%; border-collapse: collapse; min-width: 620px; font-var
 .client-strip-band .client-marquee { margin-bottom: 0; }
 .client-mark img, .client:hover .client-mark img, .client-strip img { filter: none !important; opacity: 1 !important; }
 @media (max-width: 560px) { .mq-item { width: 150px; height: 84px; padding: 12px 14px; } .mq-item img { max-height: 48px; } }
+
+/* Cars on request */
+.fleet-more { background: var(--surface); border-block: 1px solid var(--line); }
+.car-req .on-req { font-size: 1.05rem; color: var(--crimson-ink); }
+.car-req .req-link { font-weight: 600; font-size: .92rem; color: var(--crimson-ink); text-decoration: none; display: inline-flex; gap: 6px; }
+.car-req .req-link:hover { text-decoration: underline; }
+.car-req[hidden] { display: none; }
+
+/* Google place suggestions */
+.ps-host { position: relative; }
+.place-suggest { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 1200; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 18px 40px -16px rgba(0,4,120,.45); overflow: hidden; }
+.map-search.ps-host .place-suggest { right: auto; width: 100%; }
+.place-suggest ul { list-style: none; margin: 0; padding: 4px; max-height: 300px; overflow: auto; }
+.place-suggest li { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; padding: 9px 10px; border-radius: 8px; cursor: pointer; color: var(--ink); }
+.place-suggest li[aria-selected="true"], .place-suggest li:hover { background: color-mix(in srgb, var(--crimson) 9%, transparent); }
+.ps-pin { width: 14px; height: 14px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--crimson); justify-self: center; box-shadow: 0 0 8px rgba(254,0,91,.5); }
+.ps-text { display: grid; min-width: 0; }
+.ps-text b { font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ps-text small { color: var(--muted); font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ps-km { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ps-credit { margin: 0; padding: 6px 12px 8px; text-align: right; font-size: .72rem; color: var(--muted); border-top: 1px solid var(--line); }
+.field .opt { font-weight: 400; color: var(--muted); }
