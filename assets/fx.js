@@ -361,7 +361,7 @@
   function boot() {
     $$(".hero, .page-hero").forEach(function (h) { heroLayer(h); addHud(h); });
     if (!RM) road();
-    cursor(); buttons();
+    buttons();
     if (PAGE === "home") homeExtras();
     if (PAGE === "estimate") estimateExtras();
     if (PAGE === "about") aboutExtras();
