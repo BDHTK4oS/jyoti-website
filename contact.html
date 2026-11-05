@@ -73,8 +73,9 @@
       <input type="hidden" id="f-pickup-pin" name="pickup_pin">
       <input type="hidden" id="f-drop-pin" name="drop_pin">
       <p class="note pin-note" hidden style="margin-top:0">Your map pins from the estimate are attached to this enquiry.</p>
-      <div class="field"><label for="f-pickup">Pickup address</label><input id="f-pickup" name="pickup" required autocomplete="street-address"></div>
-      <div class="field"><label for="f-msg">Destination and notes</label><textarea id="f-msg" name="message" placeholder="e.g. Drop at airport, flight 6E 512 at 2:40 pm"></textarea></div>
+      <div class="field"><label for="f-pickup">Pickup address</label><input id="f-pickup" name="pickup" required autocomplete="street-address" placeholder="Start typing an address or landmark"></div>
+      <div class="field"><label for="f-drop">Drop address <span class="opt">(optional)</span></label><input id="f-drop" name="drop" placeholder="e.g. Kolkata Airport"></div>
+      <div class="field"><label for="f-msg">Notes</label><textarea id="f-msg" name="message" placeholder="e.g. Flight 6E 512 at 2:40 pm, one extra bag"></textarea></div>
       <div class="form-status" role="status" hidden></div>
       <button class="btn btn-primary" type="submit">Send enquiry</button>
       <p class="note" style="margin-top:0">This is an enquiry. Your booking is confirmed when we call you back.</p>
