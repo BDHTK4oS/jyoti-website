@@ -497,3 +497,10 @@ table.rates { width: 100%; border-collapse: collapse; min-width: 620px; font-var
 .nf-hero { min-height: 70vh; display: grid; align-items: center; }
 .nf-code { font: 800 clamp(5rem, 18vw, 11rem)/0.9 var(--font-display); margin: 0 0 8px; letter-spacing: -0.04em; background: linear-gradient(90deg, #fe005b, #7f8cff); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .nf-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+/* Cookie choice bar (only shown when SalesIQ tracking is configured) */
+.cookie-bar { position: fixed; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 60; max-width: min(440px, calc(100vw - 104px)); background: #0b0f3d; color: #fff; border: 1px solid rgba(255,255,255,.15); border-radius: 14px; padding: 14px 16px; box-shadow: 0 12px 32px rgba(0,0,0,.35); font-size: .88rem; line-height: 1.45; }
+.cookie-bar p { margin: 0 0 10px; }
+.cookie-bar a { color: #ff7fae; }
+.cookie-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.cookie-bar .btn-ghost { color: #fff; border-color: rgba(255,255,255,.5); }

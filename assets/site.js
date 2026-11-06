@@ -665,6 +665,67 @@
     } catch (e) {}
   }
 
+  /* ---------- Visit source + Zoho SalesIQ tracking (only after cookie consent) ---------- */
+  function visitSource() {
+    var key = "jc_src", src = null;
+    try { src = sessionStorage.getItem(key); } catch (e) {}
+    if (!src) {
+      var q = new URLSearchParams(location.search), ref = document.referrer, host = "";
+      try { host = ref ? new URL(ref).hostname : ""; } catch (e) {}
+      if (q.get("utm_source")) src = q.get("utm_source") + (q.get("utm_medium") ? " / " + q.get("utm_medium") : "") + (q.get("utm_campaign") ? " / " + q.get("utm_campaign") : "");
+      else if (host && host.indexOf("jyoticab.com") === -1) src = "referral: " + host;
+      else src = "direct";
+      try { sessionStorage.setItem(key, src); } catch (e) {}
+    }
+    return src;
+  }
+  function loadSalesIQ(code) {
+    if (!code || document.getElementById("zsiqscript")) return;
+    window.$zoho = window.$zoho || {};
+    window.$zoho.salesiq = window.$zoho.salesiq || {};
+    window.$zoho.salesiq.ready = function () {
+      try { window.$zoho.salesiq.floatbutton.visible("hide"); } catch (e) {}   // tracking only; customers chat on WhatsApp
+      try { window.$zoho.salesiq.visitor.info({ "First source": visitSource() }); } catch (e) {}
+    };
+    var sc = document.createElement("script");
+    sc.id = "zsiqscript"; sc.defer = true;
+    sc.src = "https://salesiq.zohopublic.com/widget?wc=" + encodeURIComponent(code);
+    document.body.appendChild(sc);
+  }
+  function cookieConsent(site) {
+    var code = site.salesiq_widget_code;
+    if (!code) return;
+    var choice = null;
+    try { choice = localStorage.getItem("jc_cookies"); } catch (e) {}
+    if (choice === "yes") { loadSalesIQ(code); return; }
+    if (choice === "no") return;
+    var bar = document.createElement("div");
+    bar.className = "cookie-bar"; bar.setAttribute("role", "region"); bar.setAttribute("aria-label", "Cookie choice");
+    bar.innerHTML = '<p>We use cookies to understand how visitors find and use our website. See our <a href="privacy.html">privacy policy</a>.</p>' +
+      '<div class="cookie-actions"><button type="button" class="btn btn-ghost btn-sm" data-c="no">Decline</button><button type="button" class="btn btn-primary btn-sm" data-c="yes">Accept</button></div>';
+    bar.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-c]"); if (!b) return;
+      try { localStorage.setItem("jc_cookies", b.dataset.c); } catch (er) {}
+      bar.remove();
+      if (b.dataset.c === "yes") loadSalesIQ(code);
+    });
+    document.body.appendChild(bar);
+  }
+  function salesiqLead(form) {
+    var z = window.$zoho && window.$zoho.salesiq;
+    if (!z || !z.visitor) return;
+    var v = function (n) { var el = form.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ""; };
+    try {
+      if (v("name")) z.visitor.name(v("name"));
+      if (v("email")) z.visitor.email(v("email"));
+      if (v("phone")) z.visitor.contactnumber(v("phone"));
+      var info = { "Enquiry type": v("enquiry_type"), "Found us via": v("heard_from"), "Visit source": v("visit_source") };
+      ["company", "trip", "car", "date", "pickup", "drop", "volume"].forEach(function (k) { if (v(k)) info[k.charAt(0).toUpperCase() + k.slice(1)] = v(k); });
+      z.visitor.info(info);
+      if (z.visitor.customaction) z.visitor.customaction("Enquiry sent", { type: v("enquiry_type") });
+    } catch (e) {}
+  }
+
   function enquiryForm(cars, site, extra) {
     var form = document.getElementById("enquiry");
     if (!form) return;
@@ -687,6 +748,7 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
+      var vs = form.querySelector("#f-visit-source"); if (vs) vs.value = visitSource();
       var btn = form.querySelector("button[type=submit]");
       btn.disabled = true; btn.textContent = "Sending…";
       var body = new URLSearchParams(new FormData(form)).toString();
@@ -696,7 +758,7 @@
         if (!r.ok) throw new Error();
         status.hidden = false; status.className = "form-status ok";
         status.textContent = r.preview ? "Preview only: on the live site this enquiry is emailed to you." : "Enquiry sent. We'll call you back shortly to confirm the car and timing.";
-        if (!r.preview) emailAlert(form, site);
+        if (!r.preview) { emailAlert(form, site); salesiqLead(form); }
         form.reset();
       }).catch(function () {
         status.hidden = false; status.className = "form-status err";
@@ -997,6 +1059,7 @@
     enquiryForm(cars, site, extra);
     callPanel(site);
     heroIntro();
+    visitSource(); cookieConsent(site);
     dutyLine();
   });
 
