@@ -65,44 +65,15 @@
   "on_request_intro": "Need something else? We arrange these through our trusted partner fleet. Tell us your date and trip and we'll confirm the car and the rate.",
   "on_request": [
     {
-      "name": "Maruti Swift",
-      "category": "Hatchback",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 1,
-      "best_for": "Short city errands on a budget"
-    },
-    {
-      "name": "Maruti WagonR",
-      "category": "Hatchback",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 1,
-      "best_for": "Quick local trips"
-    },
-    {
-      "name": "Honda Amaze",
-      "category": "Sedan",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 2,
-      "best_for": "Office duty and airport runs"
-    },
-    {
-      "name": "Hyundai Aura",
-      "category": "Sedan",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 2,
-      "best_for": "Office duty and airport runs"
-    },
-    {
-      "name": "Toyota Etios",
-      "category": "Sedan",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 2,
-      "best_for": "Comfortable city and highway trips"
+      "name": "Toyota Fortuner",
+      "category": "SUV",
+      "shape": "mpv",
+      "seats": 6,
+      "bags": 3,
+      "best_for": "Premium SUV for hills and highways",
+      "photo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/2015_Toyota_Fortuner_%28New_Zealand%29.jpg/960px-2015_Toyota_Fortuner_%28New_Zealand%29.jpg",
+      "photo_credit": "NZ Car Freak, CC BY-SA 4.0",
+      "photo_source": "https://commons.wikimedia.org/wiki/File:2015_Toyota_Fortuner_(New_Zealand).jpg"
     },
     {
       "name": "Honda City",
@@ -110,31 +81,21 @@
       "shape": "sedan",
       "seats": 4,
       "bags": 2,
-      "best_for": "Executive city travel"
+      "best_for": "Executive city travel",
+      "photo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Honda_City_SV_2020.jpg/960px-Honda_City_SV_2020.jpg",
+      "photo_credit": "Thitichai R, CC BY-SA 4.0",
+      "photo_source": "https://commons.wikimedia.org/wiki/File:Honda_City_SV_2020.jpg"
     },
     {
-      "name": "Hyundai Verna",
-      "category": "Sedan",
+      "name": "Toyota Corolla Altis",
+      "category": "Premium sedan",
       "shape": "sedan",
       "seats": 4,
       "bags": 2,
-      "best_for": "Executive city travel"
-    },
-    {
-      "name": "Maruti Ciaz",
-      "category": "Sedan",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 2,
-      "best_for": "Roomy sedan for longer trips"
-    },
-    {
-      "name": "Maruti XL6",
-      "category": "MPV",
-      "shape": "mpv",
-      "seats": 6,
-      "bags": 2,
-      "best_for": "Small groups and families"
+      "best_for": "Executive and airport travel",
+      "photo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Toyota_Corolla_Altis_X_001.jpg/960px-Toyota_Corolla_Altis_X_001.jpg",
+      "photo_credit": "JustAnotherCarDesigner, CC0",
+      "photo_source": "https://commons.wikimedia.org/wiki/File:Toyota_Corolla_Altis_X_001.jpg"
     },
     {
       "name": "Kia Carens",
@@ -142,103 +103,10 @@
       "shape": "mpv",
       "seats": 6,
       "bags": 2,
-      "best_for": "Small groups and families"
-    },
-    {
-      "name": "Kia Carnival",
-      "category": "Premium MPV",
-      "shape": "mpv",
-      "seats": 7,
-      "bags": 4,
-      "best_for": "Leadership travel and VIP guests"
-    },
-    {
-      "name": "Mahindra Bolero",
-      "category": "SUV",
-      "shape": "mpv",
-      "seats": 6,
-      "bags": 2,
-      "best_for": "Rough roads and project sites"
-    },
-    {
-      "name": "Mahindra Scorpio-N",
-      "category": "SUV",
-      "shape": "mpv",
-      "seats": 6,
-      "bags": 2,
-      "best_for": "Outstation and hill trips"
-    },
-    {
-      "name": "Mahindra XUV700",
-      "category": "SUV",
-      "shape": "mpv",
-      "seats": 6,
-      "bags": 3,
-      "best_for": "Long highway trips in comfort"
-    },
-    {
-      "name": "Tata Safari",
-      "category": "SUV",
-      "shape": "mpv",
-      "seats": 6,
-      "bags": 3,
-      "best_for": "Long highway trips in comfort"
-    },
-    {
-      "name": "MG Hector Plus",
-      "category": "SUV",
-      "shape": "mpv",
-      "seats": 6,
-      "bags": 2,
-      "best_for": "Family outstation trips"
-    },
-    {
-      "name": "Toyota Fortuner",
-      "category": "SUV",
-      "shape": "mpv",
-      "seats": 6,
-      "bags": 3,
-      "best_for": "Premium SUV for hills and highways"
-    },
-    {
-      "name": "Toyota Camry",
-      "category": "Luxury",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 2,
-      "best_for": "Senior executives and guests"
-    },
-    {
-      "name": "Skoda Superb",
-      "category": "Luxury",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 3,
-      "best_for": "Senior executives and guests"
-    },
-    {
-      "name": "Mercedes-Benz C-Class",
-      "category": "Luxury",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 2,
-      "best_for": "Weddings and VIP pickups"
-    },
-    {
-      "name": "Mercedes-Benz E-Class",
-      "category": "Luxury",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 3,
-      "best_for": "Weddings and VIP pickups"
-    },
-    {
-      "name": "BMW 5 Series",
-      "category": "Luxury",
-      "shape": "sedan",
-      "seats": 4,
-      "bags": 3,
-      "best_for": "Weddings and VIP pickups"
+      "best_for": "Small groups and families",
+      "photo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Kia_Carens_2024_Model_2.jpg/960px-Kia_Carens_2024_Model_2.jpg",
+      "photo_credit": "Ganesh Mohan T, CC BY-SA 4.0",
+      "photo_source": "https://commons.wikimedia.org/wiki/File:Kia_Carens_2024_Model_2.jpg"
     },
     {
       "name": "Audi A6",
@@ -246,55 +114,75 @@
       "shape": "sedan",
       "seats": 4,
       "bags": 3,
-      "best_for": "Weddings and VIP pickups"
+      "best_for": "Weddings and VIP pickups",
+      "photo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/2019_FAW-Audi_A6_L_%28front%29.jpg/960px-2019_FAW-Audi_A6_L_%28front%29.jpg",
+      "photo_credit": "User3204, CC BY-SA 4.0",
+      "photo_source": "https://commons.wikimedia.org/wiki/File:2019_FAW-Audi_A6_L_(front).jpg"
     },
     {
-      "name": "Tempo Traveller 12-seater",
-      "category": "Group travel",
+      "name": "Toyota Vellfire",
+      "category": "Luxury",
       "shape": "mpv",
-      "seats": 12,
-      "bags": 8,
-      "best_for": "Team outings and site visits"
+      "seats": 6,
+      "bags": 3,
+      "best_for": "VIP guests, leadership travel and weddings",
+      "photo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Toyota_Vellfire_Z_Premier.jpg/960px-Toyota_Vellfire_Z_Premier.jpg",
+      "photo_credit": "TTTNIS, CC0",
+      "photo_source": "https://commons.wikimedia.org/wiki/File:Toyota_Vellfire_Z_Premier.jpg"
     },
     {
-      "name": "Force Urbania 13-seater",
+      "name": "SML 13-seater",
       "category": "Group travel",
       "shape": "mpv",
       "seats": 13,
-      "bags": 10,
-      "best_for": "Premium van for delegations"
+      "bags": 0,
+      "best_for": "Team outings and site visits"
     },
     {
-      "name": "Tempo Traveller 17-seater",
+      "name": "Traveller 17-seater",
       "category": "Group travel",
       "shape": "mpv",
       "seats": 17,
-      "bags": 12,
-      "best_for": "Larger teams and tours"
+      "bags": 0,
+      "best_for": "Larger teams and tours",
+      "photo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/Force_Traveller%2C_Leh-Manali_Highway.jpg/960px-Force_Traveller%2C_Leh-Manali_Highway.jpg",
+      "photo_credit": "Yann Forget, CC BY-SA 3.0",
+      "photo_source": "https://commons.wikimedia.org/wiki/File:Force_Traveller,_Leh-Manali_Highway.jpg"
     },
     {
-      "name": "Tempo Traveller 26-seater",
+      "name": "Urbania 17-seater",
+      "category": "Group travel",
+      "shape": "mpv",
+      "seats": 17,
+      "bags": 0,
+      "best_for": "Premium van for delegations and tours"
+    },
+    {
+      "name": "Traveller 26-seater",
       "category": "Group travel",
       "shape": "mpv",
       "seats": 26,
       "bags": 0,
-      "best_for": "Conferences and events"
+      "best_for": "Conferences, events and tours",
+      "photo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/Force_Motors_-_Traveller_26_-_Agra_2014-05-14_4222.JPG/960px-Force_Motors_-_Traveller_26_-_Agra_2014-05-14_4222.JPG",
+      "photo_credit": "Biswarup Ganguly, CC BY 3.0",
+      "photo_source": "https://commons.wikimedia.org/wiki/File:Force_Motors_-_Traveller_26_-_Agra_2014-05-14_4222.JPG"
     },
     {
-      "name": "Mini bus 32-seater",
+      "name": "SML 26-seater",
+      "category": "Group travel",
+      "shape": "mpv",
+      "seats": 26,
+      "bags": 0,
+      "best_for": "Staff transport, events and tours"
+    },
+    {
+      "name": "SML 32-seater",
       "category": "Group travel",
       "shape": "mpv",
       "seats": 32,
       "bags": 0,
       "best_for": "Staff transport and events"
-    },
-    {
-      "name": "Coach 45-seater",
-      "category": "Group travel",
-      "shape": "mpv",
-      "seats": 45,
-      "bags": 0,
-      "best_for": "Large groups, weddings and tours"
     }
   ]
 }
