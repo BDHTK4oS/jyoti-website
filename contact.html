@@ -72,6 +72,7 @@
     <form class="form" id="enquiry" name="enquiry" method="POST" data-netlify="true" netlify-honeypot="company_website">
       <input type="hidden" name="form-name" value="enquiry">
       <input type="hidden" name="enquiry_type" value="Booking">
+      <input type="hidden" name="visit_source" id="f-visit-source">
       <p hidden><label>Leave this empty <input name="company_website"></label></p>
       <h2 style="font-size:1.5rem">Trip details</h2>
       <div class="form-grid">
@@ -87,6 +88,7 @@
       <p class="note pin-note" hidden style="margin-top:0">Your map pins from the estimate are attached to this enquiry.</p>
       <div class="field"><label for="f-pickup">Pickup address</label><input id="f-pickup" name="pickup" required autocomplete="street-address" placeholder="Start typing an address or landmark"></div>
       <div class="field"><label for="f-drop">Drop address <span class="opt">(optional)</span></label><input id="f-drop" name="drop" placeholder="e.g. Kolkata Airport"></div>
+      <div class="field"><label for="f-heard">How did you find us?</label><select id="f-heard" name="heard_from"><option value="">Choose one</option><option>Google search</option><option>Google Maps</option><option>WhatsApp message</option><option>Friend or colleague</option><option>Existing customer</option><option>Justdial / Sulekha</option><option>Email from JyotiCab</option><option>Other</option></select></div>
       <div class="field"><label for="f-msg">Notes</label><textarea id="f-msg" name="message" placeholder="e.g. Flight 6E 512 at 2:40 pm, one extra bag"></textarea></div>
       <div class="form-status" role="status" hidden></div>
       <button class="btn btn-primary" type="submit">Send enquiry</button>
