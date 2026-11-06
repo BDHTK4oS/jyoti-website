@@ -59,8 +59,18 @@
       <h2 data-extra-heading>More cars on request</h2>
       <p data-extra-intro>Need something else? We arrange these through our trusted partner fleet. Tell us your date and trip and we'll confirm the car and the rate.</p>
     </div>
-    <div class="client-filters more-filters" role="group" aria-label="Filter cars by type" hidden></div>
-    <div class="fleet-grid more-grid" aria-live="polite"></div>
+    <div class="client-marquee car-marquee" data-marquee="2"></div>
+    <div class="mq-bar">
+      <div class="reviews-nav mq-nav car-mq-nav" role="group" aria-label="Scroll cars">
+        <button type="button" data-dir="prev" aria-label="Scroll cars left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button type="button" data-dir="next" aria-label="Scroll cars right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm car-toggle" aria-expanded="false" aria-controls="car-all">See all cars by type</button>
+    </div>
+    <div class="car-all" id="car-all" hidden>
+      <div class="client-filters more-filters" role="group" aria-label="Filter cars by type" hidden></div>
+      <div class="fleet-grid more-grid" aria-live="polite"></div>
+    </div>
   </div>
 </section>
 

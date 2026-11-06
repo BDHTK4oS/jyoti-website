@@ -52,6 +52,9 @@ collections:
             fields:
               - { name: name, label: "Vehicle name", widget: string }
               - { name: category, label: "Vehicle type", widget: string, hint: "Cars with the same type are grouped together, e.g. Sedan, SUV, Luxury, Group travel" }
+              - { name: photo, label: "Photo (optional, landscape, side view looks best)", widget: image, required: false, hint: "Shown on the car's card and in the scrolling list. Without a photo, a drawing is used." }
+              - { name: photo_credit, label: "Photo credit (if the photo is not your own)", widget: string, required: false, hint: "e.g. Photographer name, CC BY-SA 4.0. Shown in the photo credits on Fleet & rates." }
+              - { name: photo_source, label: "Photo source link", widget: string, required: false }
               - { name: shape, label: "Drawing style", widget: select, options: [ { label: "Sedan", value: sedan }, { label: "MPV / SUV / van", value: mpv } ], default: mpv }
               - { name: seats, label: "Passenger seats", widget: number, value_type: int, min: 1 }
               - { name: bags, label: "Bags it can carry (0 hides it)", widget: number, value_type: int, min: 0, required: false }
@@ -96,6 +99,8 @@ collections:
           - { name: gstin, label: "GSTIN", widget: string }
           - { name: msme, label: "Udyam / MSME number", widget: string }
           - { name: founded_year, label: "Year founded (optional)", widget: string, required: false, hint: "Shown as 'Since 20XX' on the About page. Leave empty to hide." }
+          - { name: car_count, label: "Car types count shown on the About page", widget: string, required: false, default: "30+" }
+          - { name: car_count_label, label: "Text under the car count", widget: string, required: false }
           - { name: about_headline, label: "About page – headline", widget: string }
           - name: highlights
             label: About page – highlight figures
