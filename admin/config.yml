@@ -66,8 +66,8 @@ collections:
           - { name: package_km, label: "Package kilometres per duty", widget: number, value_type: int, min: 1 }
           - { name: night_after_11pm, label: "Driver charge after 11 pm (₹)", widget: number, value_type: int, min: 0 }
           - { name: early_before_6am, label: "Driver charge before 6 am (₹)", widget: number, value_type: int, min: 0 }
-          - { name: outstation_km_per_day, label: "Outstation charge applies above (km per day)", widget: number, value_type: int, min: 0 }
-          - { name: outstation_charge_per_day, label: "Outstation charge per day (₹)", widget: number, value_type: int, min: 0 }
+          - { name: outstation_km_per_day, label: "Outstation minimum km per day (billed at the car's per-km rate)", widget: number, value_type: int, min: 0 }
+          - { name: outstation_charge_per_day, label: "Outstation charge per day (₹), not added when the night charge applies", widget: number, value_type: int, min: 0 }
           - { name: driver_lodging_per_night, label: "Driver food & stay per night, if not arranged (₹)", widget: number, value_type: int, min: 0 }
           - { name: terms, label: "Terms and conditions (shown on Fleet & rates)", widget: list, field: { name: term, label: Term, widget: text } }
           - { name: office_lat, label: "Garage location – latitude", widget: number, value_type: float, hint: "Where every duty starts and ends. In Google Maps, right-click your garage and click the numbers to copy them. The first number is latitude." }
