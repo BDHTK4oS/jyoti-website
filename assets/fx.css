@@ -123,8 +123,9 @@
 .trust .wrap > div.fx-in { --fx-s: 1; }
 
 /* ---------- About: radar on the map pin, HUD frames on the figures ---------- */
-.find-map .leaflet-marker-icon::before, .find-map .leaflet-marker-icon::after {
-  content: ""; position: absolute; left: 17px; top: 32px; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%;
+.find-radar { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; z-index: 2; }
+.find-radar::before, .find-radar::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%;
   border: 2px solid #fe005b; pointer-events: none;
 }
 .highlights > div { position: relative; }
@@ -172,8 +173,8 @@
   .swoosh .fx-pulse { animation: fx-run 4.8s cubic-bezier(.5,0,.3,1) 2.2s infinite; }
   .fx-holo::before { animation: fx-spin 4s linear infinite; }
   .fx-road-car { transition: transform .12s linear; }
-  .find-map .leaflet-marker-icon::before { animation: fx-radar 2.4s ease-out infinite; }
-  .find-map .leaflet-marker-icon::after { animation: fx-radar 2.4s ease-out 1.2s infinite; }
+  .find-radar::before { animation: fx-radar 2.4s ease-out infinite; }
+  .find-radar::after { animation: fx-radar 2.4s ease-out 1.2s infinite; }
   .since::after { animation: fx-badge 2.6s ease-out infinite; }
   .fx-dial .r1 { animation: fx-rot 28s linear infinite; transform-origin: 50% 50%; transform-box: fill-box; }
   .fx-dial .r2 { animation: fx-rot 16s linear infinite reverse; transform-origin: 50% 50%; transform-box: fill-box; }

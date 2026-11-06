@@ -310,7 +310,7 @@
     addEventListener("pointerdown", function () { ring.classList.add("down"); });
     addEventListener("pointerup", function () { ring.classList.remove("down"); });
     // Leaflet maps want their own cursor
-    document.addEventListener("pointerover", function (e) { var m = e.target.closest && e.target.closest(".leaflet-container"); ring.style.opacity = m ? "0" : ""; dot.style.opacity = m ? "0" : ""; });
+    document.addEventListener("pointerover", function (e) { var m = e.target.closest && e.target.closest(".map-canvas, .find-map"); ring.style.opacity = m ? "0" : ""; dot.style.opacity = m ? "0" : ""; });
   }
   function buttons() {
     if (RM) return;

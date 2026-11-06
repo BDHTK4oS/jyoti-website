@@ -104,18 +104,43 @@
       for (var i = 0; i < points.length - 1; i++) { var km = haversine(points[i], points[i + 1]) * 1.35; legs.push({ km: km, min: km / 22 * 60, approx: true }); }
       return legs;
     };
-    var url = "https://router.project-osrm.org/route/v1/driving/" + points.map(function (p) { return p.lng.toFixed(6) + "," + p.lat.toFixed(6); }).join(";") + "?overview=false";
+    var url = "/.netlify/functions/route?pts=" + points.map(function (p) { return p.lat.toFixed(6) + "," + p.lng.toFixed(6); }).join("|");
     var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 8000);
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 9000);
     return fetch(url, ctrl ? { signal: ctrl.signal } : {})
       .then(function (r) { return r.json(); })
       .then(function (d) {
         clearTimeout(timer);
-        if (!d.routes || !d.routes[0]) throw new Error("no route");
-        return d.routes[0].legs.map(function (l) { return { km: l.distance / 1000, min: l.duration / 60 * tf }; });
+        if (!d.legs || d.legs.length !== points.length - 1) throw new Error("no route");
+        return d.legs.map(function (l) { return { km: l.m / 1000, min: l.s / 60 * tf }; });
       })
       .catch(function () { clearTimeout(timer); return fallback(); });
   }
+
+  /* ---------- Google Maps loader (browser key, locked to our web addresses) ---------- */
+  var GM_KEY = "", gmPromise = null;
+  function loadGoogleMaps() {
+    if (window.google && google.maps && google.maps.Map) return Promise.resolve(google.maps);
+    if (gmPromise) return gmPromise;
+    if (!GM_KEY) return Promise.reject(new Error("no key"));
+    gmPromise = new Promise(function (res, rej) {
+      window.__jcGmReady = function () { res(google.maps); };
+      window.gm_authFailure = function () { rej(new Error("auth")); };
+      var sc = document.createElement("script");
+      sc.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(GM_KEY) + "&v=weekly&loading=async&region=IN&language=en&callback=__jcGmReady";
+      sc.async = true; sc.onerror = function () { rej(new Error("load")); };
+      document.head.appendChild(sc);
+    });
+    gmPromise.catch(function () { gmPromise = null; });
+    return gmPromise;
+  }
+  window.jcLoadGoogleMaps = function (key) { if (key) GM_KEY = key; return loadGoogleMaps(); };
+  function pinIcon(color, size) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" viewBox="0 0 40 50"><path d="M20 49s17-15.3 17-29A17 17 0 0 0 3 20c0 13.7 17 29 17 29z" fill="' + color + '" stroke="#fff" stroke-width="3"/></svg>';
+    size = size || 36;
+    return { url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg), scaledSize: new google.maps.Size(size, size * 1.25), anchor: new google.maps.Point(size / 2, size * 1.25), labelOrigin: new google.maps.Point(size / 2, size * 0.5) };
+  }
+  function pinLabel(t) { return { text: t, color: "#ffffff", fontWeight: "800", fontSize: "13px" }; }
 
   /* ---------- Shared pieces ---------- */
   var ICON = {
@@ -165,7 +190,8 @@
       '<li><a href="' + waLink(site) + '" target="_blank" rel="noopener">WhatsApp ' + esc(site.whatsapp) + "</a></li>" +
       '<li><a href="mailto:' + esc(site.email) + '">' + esc(site.email) + "</a></li></ul></div>" +
       "<div><h3>Pages</h3><ul>" + PAGES.map(function (p) { return '<li><a href="' + p[0] + '">' + p[1] + "</a></li>"; }).join("") + "</ul></div>" +
-      '<div class="legal"><span>© ' + new Date().getFullYear() + " " + esc(site.business_name) + "</span><span>GSTIN " + esc(site.gstin) + "</span><span>Udyam " + esc(site.msme) + '</span><span>Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors</span></div></div>';
+      '<div class="legal"><span>© ' + new Date().getFullYear() + " " + esc(site.business_name) + "</span><span>GSTIN " + esc(site.gstin) + "</span><span>Udyam " + esc(site.msme) + '</span><a href="privacy.html">Privacy policy</a><a href="terms.html">Terms of service</a></div>' +
+      '<p class="legal-note">Client names and logos are trademarks of their respective owners, shown only to identify organisations we have served. Maps and place data © Google.</p></div>';
   }
 
   function bindText(site) {
@@ -298,13 +324,17 @@
     { name: "Sealdah Station", lat: 22.5675, lng: 88.3702 },
     { name: "Salt Lake Sector V", lat: 22.5726, lng: 88.4313 }
   ];
+  var PIN_COLOR = { o: "#000478", p: "#fe005b", d: "#0a8f5a" };
   function MapPicker(el, rates, onChange) {
     var self = this;
     this.el = el;
     this.dropWord = "Drop";
     this.pts = { pickup: null, drop: null };
     this.mode = "pickup";
+    this.onChange = onChange;
     this.office = { lat: n(rates.office_lat, 22.5133), lng: n(rates.office_lng, 88.3919) };
+    this.markers = {};
+    this.map = null;
     el.innerHTML =
       '<div class="map-tools">' +
         '<div class="seg seg-sm" role="group" aria-label="Which pin to place">' +
@@ -319,67 +349,30 @@
       '<div class="map-canvas" id="' + el.id + '-canvas" role="application" aria-label="Map: tap to drop a pin"></div>' +
       '<p class="map-status" role="status">Tap the map to drop your pickup pin. Drag a pin to adjust it.</p>';
     this.status = el.querySelector(".map-status");
-    if (typeof L === "undefined") { this.status.textContent = "The map could not load. You can still type your kilometres below."; return; }
-    var map = this.map = L.map(el.querySelector(".map-canvas"), { scrollWheelZoom: false }).setView([this.office.lat, this.office.lng], 12);
-    var tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
-    var tileWarned = false;
-    tiles.on("tileerror", function () {
-      if (tileWarned) return; tileWarned = true;
-      el.classList.add("no-tiles");
-      self.status.textContent = "Street map couldn't load here. You can still tap to drop pins (J marks our garage), or search a place, or type your kilometres below.";
-    });
-    var icon = function (cls, txt) { return L.divIcon({ className: "", html: '<span class="map-pin ' + cls + '"><b>' + txt + "</b></span>", iconSize: [34, 34], iconAnchor: [17, 34] }); };
-    L.marker([this.office.lat, this.office.lng], { icon: icon("o", "J"), keyboard: false, title: "Our garage, Kasba" }).addTo(map);
-    this.markers = {};
-    function place(kind, latlng) {
-      var p = { lat: latlng.lat, lng: latlng.lng };
-      self.pts[kind] = p;
-      if (self.markers[kind]) self.markers[kind].setLatLng(latlng);
-      else {
-        self.markers[kind] = L.marker(latlng, { icon: icon(kind === "pickup" ? "p" : "d", kind === "pickup" ? "P" : "D"), draggable: true }).addTo(map);
-        self.markers[kind].on("dragend", function (e) { var ll = e.target.getLatLng(); self.pts[kind] = { lat: ll.lat, lng: ll.lng }; onChange(); });
-      }
-      if (kind === "pickup" && !self.pts.drop) self.setMode("drop");
-      onChange();
-    }
-    this.place = place;
-    map.on("click", function (e) { place(self.mode, e.latlng); });
     el.querySelectorAll("[data-mode]").forEach(function (b) { b.addEventListener("click", function () { self.setMode(b.dataset.mode); }); });
     el.querySelector(".map-locate").addEventListener("click", function () {
       if (!navigator.geolocation) { self.status.textContent = "Location isn't available in this browser. Tap the map instead."; return; }
       self.status.textContent = "Finding your location…";
       navigator.geolocation.getCurrentPosition(function (pos) {
-        var ll = L.latLng(pos.coords.latitude, pos.coords.longitude); map.setView(ll, 15); self.setMode("pickup"); place("pickup", ll);
+        var ll = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        self.setMode("pickup"); self.go(ll); self.place("pickup", ll);
+        self.status.textContent = "Pickup set to your location. Drag the pin to fine-tune it.";
       }, function () { self.status.textContent = "Couldn't get your location. Tap the map or search instead."; }, { timeout: 8000 });
     });
     var results = el.querySelector(".map-results");
-    /* Kolkata-area matches first, then matches anywhere in India, merged into one list to choose from.
-       Local trips favour nearby places; outstation trips (Digha, Puri, Darjeeling) still find the real town. */
-    function nominatim(q, box) {
-      var url = "https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=in&accept-language=en&q=" + encodeURIComponent(q) + (box ? "&viewbox=" + box + "&bounded=1" : "&viewbox=85.8,27.3,89.9,21.5");
-      return fetch(url).then(function (r) { return r.json(); }).catch(function () { return []; });
-    }
-    function geocode(q) {
-      return Promise.all([nominatim(q, "88.05,22.85,88.65,22.35"), nominatim(q, "")]).then(function (r) {
-        var local = r[0], wide = r[1], out = [], seen = {};
-        var first = self.dropWord === "Destination" && self.mode === "drop" ? wide.concat(local) : local.concat(wide);
-        first.forEach(function (p) { var k = (+p.lat).toFixed(3) + "," + (+p.lon).toFixed(3); if (!seen[k] && out.length < 6) { seen[k] = 1; out.push(p); } });
-        return out;
-      });
-    }
-    function showResults(list) {
-      if (!list.length) { results.hidden = true; self.status.textContent = "No places found. Try a nearby landmark or tap the map."; return; }
-      results.innerHTML = list.map(function (p, i) { return '<li><button type="button" data-i="' + i + '">' + esc(p.display_name) + "</button></li>"; }).join("");
-      results.hidden = false; self.status.textContent = "Choose a result to set the " + (self.mode === "pickup" ? "pickup" : self.dropWord.toLowerCase()) + " pin.";
-      results.onclick = function (ev) {
-        var b = ev.target.closest("button"); if (!b) return;
-        var p = list[+b.dataset.i], ll = L.latLng(+p.lat, +p.lon);
-        results.hidden = true; map.setView(ll, 15); place(self.mode, ll);
-      };
-    }
+    var pickPlace = function (id, label) {
+      results.hidden = true;
+      self.status.textContent = "Finding " + label + "…";
+      fetch("/.netlify/functions/places?id=" + encodeURIComponent(id)).then(function (r) { return r.json(); }).then(function (d) {
+        if (!d || !isFinite(d.lat)) throw new Error("none");
+        var ll = { lat: +d.lat, lng: +d.lng }, kind = self.mode;
+        self.go(ll); self.place(kind, ll);
+        self.status.textContent = (kind === "pickup" ? "Pickup" : self.dropWord) + " set: " + label + ". Drag the pin to fine-tune it.";
+      }).catch(function () { self.status.textContent = "Couldn't find that place. Tap the map to drop a pin instead."; });
+    };
     PlaceSuggest(el.querySelector('input[type="search"]'), function (pl) {
-      var ll = L.latLng(pl.lat, pl.lng); results.hidden = true; map.setView(ll, 15);
-      var kind = self.mode; place(kind, ll);
+      var ll = { lat: pl.lat, lng: pl.lng }, kind = self.mode;
+      results.hidden = true; self.go(ll); self.place(kind, ll);
       self.status.textContent = (kind === "pickup" ? "Pickup" : self.dropWord) + " set: " + pl.name + ". Drag the pin to fine-tune it.";
     });
     el.querySelector(".map-search").addEventListener("submit", function (e) {
@@ -387,15 +380,66 @@
       var q = el.querySelector('input[type="search"]').value.trim(); if (!q) return;
       results.hidden = true; results.innerHTML = "";
       self.status.textContent = "Searching…";
-      geocode(q).then(showResults).catch(function () { self.status.textContent = "Search isn't available right now. Tap the map to drop a pin."; });
+      fetch("/.netlify/functions/places?q=" + encodeURIComponent(q)).then(function (r) { return r.json(); }).then(function (d) {
+        var list = (d && d.suggestions) || [];
+        if (!list.length) { self.status.textContent = "No places found. Try a nearby landmark or tap the map."; return; }
+        results.innerHTML = list.map(function (p, i) { return '<li><button type="button" data-i="' + i + '"><b>' + esc(p.main) + "</b>" + (p.secondary ? " <small>" + esc(p.secondary) + "</small>" : "") + "</button></li>"; }).join("");
+        results.hidden = false;
+        self.status.textContent = "Choose a result to set the " + (self.mode === "pickup" ? "pickup" : self.dropWord.toLowerCase()) + " pin.";
+        results.onclick = function (ev) { var b = ev.target.closest("button"); if (!b) return; var p = list[+b.dataset.i]; pickPlace(p.id, p.main); };
+      }).catch(function () { self.status.textContent = "Search isn't available right now. Tap the map to drop a pin."; });
     });
     var quick = el.querySelector(".map-quick");
     QUICK_PLACES.forEach(function (qp) {
       var b = document.createElement("button"); b.type = "button"; b.textContent = qp.name;
-      b.addEventListener("click", function () { var ll = L.latLng(qp.lat, qp.lng); results.hidden = true; map.setView(ll, 15); place(self.mode, ll); });
+      b.addEventListener("click", function () { var ll = { lat: qp.lat, lng: qp.lng }; results.hidden = true; self.go(ll); self.place(self.mode, ll); });
       quick.appendChild(b);
     });
+    // Load the Google map only when it's about to be seen
+    var canvas = el.querySelector(".map-canvas");
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); self.ensure(); } }, { rootMargin: "200px" });
+      io.observe(canvas);
+    } else this.ensure();
   }
+  MapPicker.prototype.ensure = function () {
+    var self = this;
+    if (this.ready) return this.ready;
+    this.ready = loadGoogleMaps().then(function (gm) {
+      var map = self.map = new gm.Map(self.el.querySelector(".map-canvas"), {
+        center: self.office, zoom: 12, clickableIcons: false, mapTypeControl: false, streetViewControl: false,
+        fullscreenControl: false, gestureHandling: "cooperative"
+      });
+      new gm.Marker({ position: self.office, map: map, icon: pinIcon(PIN_COLOR.o), label: pinLabel("J"), title: "Our garage, Kasba", zIndex: 1 });
+      map.addListener("click", function (e) { self.place(self.mode, e.latLng.toJSON()); });
+      ["pickup", "drop"].forEach(function (k) { if (self.pts[k]) self.drawMarker(k, self.pts[k]); });
+      if (self.pendingView) { self.go(self.pendingView); self.pendingView = null; }
+      return map;
+    }).catch(function () {
+      self.ready = null;
+      self.el.classList.add("no-tiles");
+      self.status.textContent = "The map couldn't load. You can still search a place above, or type your kilometres below.";
+    });
+    return this.ready;
+  };
+  MapPicker.prototype.drawMarker = function (kind, ll) {
+    var self = this;
+    if (!this.map) return;
+    if (this.markers[kind]) { this.markers[kind].setPosition(ll); return; }
+    var c = kind === "pickup" ? "p" : "d";
+    var m = this.markers[kind] = new google.maps.Marker({ position: ll, map: this.map, draggable: true, icon: pinIcon(PIN_COLOR[c]), label: pinLabel(kind === "pickup" ? "P" : "D"), zIndex: 5 });
+    m.addListener("dragend", function () { self.pts[kind] = m.getPosition().toJSON(); self.onChange(); });
+  };
+  MapPicker.prototype.place = function (kind, ll) {
+    this.pts[kind] = { lat: ll.lat, lng: ll.lng };
+    this.drawMarker(kind, this.pts[kind]);
+    if (kind === "pickup" && !this.pts.drop) this.setMode("drop");
+    this.onChange();
+  };
+  MapPicker.prototype.go = function (ll) {
+    if (!this.map) { this.pendingView = ll; this.ensure(); return; }
+    this.map.panTo(ll); this.map.setZoom(15);
+  };
   MapPicker.prototype.setMode = function (m) {
     this.mode = m;
     this.el.querySelectorAll("[data-mode]").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.mode === m); });
@@ -404,7 +448,7 @@
     this.dropWord = w;
     var s = this.el.querySelector(".drop-word"); if (s) s.textContent = w;
   };
-  MapPicker.prototype.refresh = function () { if (this.map) this.map.invalidateSize(); };
+  MapPicker.prototype.refresh = function () { this.ensure(); };
 
   /* ---------- Estimator (used in the home hero and on the Estimate page) ---------- */
   function Estimator(root, cars, rates, site, opts) {
@@ -663,7 +707,7 @@
 
 
   /* ---------- Google reviews ----------
-     Live reviews come from /.netlify/functions/google-reviews (Places API, cached daily).
+     Live reviews come from /.netlify/functions/google-reviews (Places API, fetched when the section comes into view; Google's terms don't allow caching them).
      Reviews added in the admin panel (data/reviews.json) are always shown too. */
   function stars(n) {
     var out = "";
@@ -674,7 +718,12 @@
     if (cfg.show_section === false) { el.hidden = true; return; }
     var isPreview = /claude|localhost|127\.0\.0\.1/.test(location.hostname);
     var minStars = n(cfg.min_stars, 5) || 5;
-    var live = isPreview ? Promise.resolve(null) : fetch("/.netlify/functions/google-reviews").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    var fetchLive = function () { return fetch("/.netlify/functions/google-reviews").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
+    var live = isPreview ? Promise.resolve(null) : new Promise(function (res) {
+      if (!("IntersectionObserver" in window)) { res(fetchLive()); return; }
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); res(fetchLive()); } }, { rootMargin: "400px" });
+      io.observe(el);
+    });
     live.then(function (g) {
       var list = [];
       if (g && g.reviews) list = list.concat(g.reviews);
@@ -920,6 +969,7 @@
   /* ---------- Boot ---------- */
   Promise.all([getJSON("site"), getJSON("fleet"), getJSON("rates"), getJSON("reviews"), getJSON("clients")]).then(function (d) {
     var site = Object.assign({}, FALLBACK.site, d[0]);
+    GM_KEY = site.maps_browser_key || "";
     var cars = (d[1] && d[1].cars && d[1].cars.length ? d[1].cars : FALLBACK.fleet.cars).filter(function (c) { return c && c.name; });
     var rates = Object.assign({}, FALLBACK.rates, d[2]);
     var extra = (d[1] && Array.isArray(d[1].on_request) ? d[1].on_request : []).filter(function (c) { return c && c.name; });
