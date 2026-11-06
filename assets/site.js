@@ -147,6 +147,7 @@
 
   var PAGES = [
     ["index.html", "Home"], ["about.html", "About us"], ["fleet.html", "Fleet & rates"],
+    ["outstation-cabs.html", "Outstation"], ["airport-cab.html", "Airport"],
     ["corporate.html", "Corporate"], ["estimate.html", "Estimate a trip"], ["contact.html", "Contact & booking"]
   ];
 
@@ -186,7 +187,7 @@
       '<li><a href="tel:' + digits(site.phone_landline) + '">' + esc(site.phone_landline) + "</a></li>" +
       '<li><a href="' + waLink(site) + '" target="_blank" rel="noopener">WhatsApp ' + esc(site.whatsapp) + "</a></li>" +
       '<li><a href="mailto:' + esc(site.email) + '">' + esc(site.email) + "</a></li></ul></div>" +
-      "<div><h3>Pages</h3><ul>" + PAGES.concat([["airport-cab.html", "Airport cabs"], ["outstation-cabs.html", "Outstation trips"]]).map(function (p) { return '<li><a href="' + p[0] + '">' + p[1] + "</a></li>"; }).join("") + "</ul></div>" +
+      "<div><h3>Pages</h3><ul>" + PAGES.map(function (p) { return '<li><a href="' + p[0] + '">' + p[1] + "</a></li>"; }).join("") + "</ul></div>" +
       '<div class="legal"><span>© ' + new Date().getFullYear() + " " + esc(site.business_name) + "</span><span>GSTIN " + esc(site.gstin) + "</span><span>Udyam " + esc(site.msme) + '</span><a href="privacy.html">Privacy policy</a><a href="terms.html">Terms of service</a>' + (site.google_review_url ? '<a href="' + esc(site.google_review_url) + '" target="_blank" rel="noopener">Review us on Google</a>' : "") + '</div>' +
       '<p class="legal-note">Client names and logos are trademarks of their respective owners, shown only to identify organisations we have served. Maps and place data © Google.</p></div>';
   }
@@ -616,13 +617,37 @@
     var grid = sec.querySelector(".more-grid"), fil = sec.querySelector(".more-filters");
     grid.innerHTML = extra.map(function (c) {
       var b = n(c.bags);
-      return '<article class="car car-req" data-cat="' + esc(c.category || "Other") + '"><div class="car-art">' + carArt({ name: c.name, category: c.category, shape: c.shape }) + "</div>" +
+      return '<article class="car car-req" data-cat="' + esc(c.category || "Other") + '"><div class="car-art">' + carArt({ name: c.name, category: c.category, shape: c.shape, photo: c.photo }) + "</div>" +
         "<div><h3>" + esc(c.name) + '</h3><div class="car-cat">' + esc(c.category || "") + "</div></div>" +
         '<div class="car-specs"><span>' + n(c.seats) + " seats</span>" + (b ? "<span>" + b + " bags</span>" : "") + "<span>AC</span></div>" +
         (c.best_for ? '<p class="car-cat">' + esc(c.best_for) + "</p>" : "") +
         '<div class="car-price"><span>Price</span><strong class="on-req">On request</strong></div>' +
         '<a class="req-link" href="contact.html?car=' + encodeURIComponent(c.name) + '#enquiry">Ask for this car <span aria-hidden="true">&rarr;</span></a></article>';
     }).join("");
+    // Two auto-scrolling rows of car tiles (like the client logos); the full list with filters opens on demand
+    var mqHost = sec.querySelector(".car-marquee");
+    if (mqHost) {
+      var rows = [[], []];
+      extra.forEach(function (c, i) { rows[i % 2].push(c); });
+      mqHost.innerHTML = rows.map(function () { return '<div class="mq-row" tabindex="0" aria-label="Cars on request, scrolling. Hover or tap to pause."></div>'; }).join("");
+      var tile = function (c) {
+        var meta = [c.category, n(c.seats) ? n(c.seats) + " seats" : ""].filter(Boolean).map(esc).join(" · ");
+        return '<li class="mq-item mq-car" title="' + esc(c.name) + '"><div class="mq-car-art car-art">' + carArt({ name: c.name, category: c.category, shape: c.shape, photo: c.photo }) + "</div><span>" + esc(c.name) + "</span>" + (meta ? "<small>" + meta + "</small>" : "") + "</li>";
+      };
+      var ctrls = [];
+      mqHost.querySelectorAll(".mq-row").forEach(function (row, i) { ctrls.push(Marquee(row, rows[i].map(tile).join(""), i % 2 ? -1 : 1, 0.45)); });
+      var mnav = sec.querySelector(".car-mq-nav");
+      if (mnav) mnav.addEventListener("click", function (e) { var bt = e.target.closest("button"); if (!bt) return; ctrls.forEach(function (c, i) { c.nudge((bt.dataset.dir === "next" ? 320 : -320) * (i % 2 ? -1 : 1)); }); });
+    }
+    var tog = sec.querySelector(".car-toggle"), all = sec.querySelector(".car-all");
+    if (tog && all) {
+      var label = "See all " + extra.length + " cars by type";
+      tog.textContent = label;
+      tog.addEventListener("click", function () {
+        var open = all.hidden; all.hidden = !open; tog.setAttribute("aria-expanded", open); tog.textContent = open ? "Hide full list" : label;
+        if (open && hasGSAP() && !reduced()) gsap.from(all.querySelectorAll(".car-req:not([hidden])"), { y: 16, opacity: 0, duration: 0.45, stagger: 0.025, ease: "power2.out" });
+      });
+    }
     if (fil && cats.length > 1) {
       var count = function (k) { return extra.filter(function (c) { return (c.category || "Other") === k; }).length; };
       fil.hidden = false;
@@ -750,6 +775,8 @@
     PlaceSuggest(form.querySelector("#f-drop"), function (pl) { if (dr && !params.get("drop")) dr.value = gm(pl); });
     if (pu && params.get("pickup")) pu.value = "https://www.google.com/maps?q=" + params.get("pickup");
     if (dr && params.get("drop")) dr.value = "https://www.google.com/maps?q=" + params.get("drop");
+    var msgBox = form.querySelector("#f-msg");
+    if (msgBox && params.get("dest") && !msgBox.value) msgBox.value = "Outstation trip to " + params.get("dest").slice(0, 60) + ". ";
     var pinNote = form.querySelector(".pin-note"); if (pinNote && params.get("pickup")) pinNote.hidden = false;
     var status = form.querySelector(".form-status");
     form.addEventListener("submit", function (e) {
