@@ -2,7 +2,7 @@
 // Needs two environment variables in Netlify (Site configuration > Environment variables):
 //   GOOGLE_PLACES_API_KEY  – a Places API (New) key from Google Cloud
 //   GOOGLE_PLACE_ID        – the Place ID of the Jyoti Cab Rental Google listing
-// The response is cached on Netlify's CDN for a day, so Google is called about once a day.
+// Not cached: Google's terms don't allow storing Places content. The page only asks when the reviews section scrolls into view.
 
 export default async () => {
   const key = process.env.GOOGLE_PLACES_API_KEY;
@@ -37,7 +37,7 @@ export default async () => {
       reviews
     }), {
       status: 200,
-      headers: { ...headers, "Cache-Control": "public, max-age=3600", "Netlify-CDN-Cache-Control": "public, s-maxage=86400, stale-while-revalidate=86400, durable" }
+      headers: { ...headers, "Cache-Control": "no-store" }
     });
   } catch (e) {
     return new Response(JSON.stringify({ configured: true, error: String(e.message || e) }), { status: 502, headers: { ...headers, "Cache-Control": "no-store" } });

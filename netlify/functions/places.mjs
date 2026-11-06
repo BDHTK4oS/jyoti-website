@@ -2,6 +2,7 @@
 // Uses the same GOOGLE_PLACES_API_KEY as the reviews function (Places API (New)).
 //   GET /.netlify/functions/places?q=salt%20lake&s=<session>   -> suggestions
 //   GET /.netlify/functions/places?id=<placeId>&s=<session>    -> { lat, lng, name, address }
+// Google's terms don't allow caching Places results, so every answer is no-store.
 // A session token ties the typing and the final pick together, so Google bills it as one lookup.
 
 const KASBA = { latitude: 22.5107522, longitude: 88.3945515 };
@@ -27,7 +28,7 @@ export default async (req) => {
       return json({
         lat: p.location?.latitude, lng: p.location?.longitude,
         name: p.displayName?.text || "", address: p.formattedAddress || ""
-      }, 200, "public, max-age=86400");
+      });
     }
 
     if (q.length < 3) return json({ configured: true, suggestions: [] });
@@ -53,7 +54,7 @@ export default async (req) => {
       text: p.text?.text || "",
       km: typeof p.distanceMeters === "number" ? Math.round(p.distanceMeters / 100) / 10 : null
     }));
-    return json({ configured: true, suggestions }, 200, "public, max-age=3600");
+    return json({ configured: true, suggestions });
   } catch (e) {
     return json({ configured: true, error: "unavailable" }, 502);
   }
