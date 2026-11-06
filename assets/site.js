@@ -14,7 +14,7 @@
     ] },
     reviews: { reviews: [] },
     clients: { clients: [] },
-    rates: { package_hours: 10, package_km: 100, night_after_11pm: 300, early_before_6am: 200, outstation_km_per_day: 200, outstation_charge_per_day: 500, driver_lodging_per_night: 1500, office_lat: 22.5133, office_lng: 88.3919, garage_km_buffer: 2, traffic_factor: 2, time_rounding_minutes: 15, terms: [] }
+    rates: { package_hours: 10, package_km: 100, night_after_11pm: 300, early_before_6am: 200, outstation_km_per_day: 250, outstation_charge_per_day: 500, driver_lodging_per_night: 1500, office_lat: 22.5133, office_lng: 88.3919, garage_km_buffer: 2, traffic_factor: 2, time_rounding_minutes: 15, terms: [] }
   };
 
   function getJSON(name) {
@@ -66,26 +66,23 @@
       if (release > 23 * 60) lines.push({ label: "Driver charge, after 11 pm", amount: n(rates.night_after_11pm) });
       return { total: sum(lines), lines: lines, dutyMins: dutyMins, dutyKm: dutyKm };
     },
+    // Outstation: per-km billing with a daily minimum (e.g. 250 km a day x the car's per-km rate).
+    // A daily outstation charge is added, except when the driver's night charge applies (then only the night charge).
     outstation: function (car, rates, o) {
-      var pkgH = n(rates.package_hours, 10), pkgK = n(rates.package_km, 100), step = n(rates.time_rounding_minutes, 15) || 15;
       var g = Pricing.garage(rates, o.garage);
       var days = Math.max(1, Math.round(n(o.days, 1))), nights = Math.max(0, Math.round(n(o.nights)));
+      var minPerDay = n(rates.outstation_km_per_day, 250), rate = n(car.extra_km);
       var totalKm = Math.ceil(Math.max(0, n(o.km)) + (g ? g.km : 0));
-      var kmDay = totalKm / days;
-      var dayMins = Pricing.roundUp(Math.max(0, n(o.hoursPerDay, 10)) * 60 + (g ? g.mins / days : 0), step);
-      var exKm = Math.max(0, kmDay - pkgK), exMins = Math.max(0, dayMins - pkgH * 60);
-      var kmCost = exKm * n(car.extra_km), hrCost = exMins / 60 * n(car.extra_hour);
+      var minKm = minPerDay * days, billKm = Math.max(totalKm, minKm);
       var lines = [];
       if (g) lines.push({ info: true, label: "Garage out + in, approx.", value: g.km + " km · " + hm(g.mins) });
-      lines.push({ info: true, label: "Trip billed on", value: totalKm + " km over " + days + " day" + (days > 1 ? "s" : "") });
-      lines.push({ label: "Package × " + days + " day" + (days > 1 ? "s" : ""), amount: n(car.package_price) * days });
-      if (kmCost > 0 || hrCost > 0) {
-        if (kmCost >= hrCost) lines.push({ label: "Extra " + Math.round(exKm) + " km/day × " + days, amount: Math.round(kmCost * days) });
-        else lines.push({ label: "Extra " + hm(exMins) + "/day × " + days, amount: Math.round(hrCost * days) });
-      }
-      if (kmDay > n(rates.outstation_km_per_day, 200)) lines.push({ label: "Outstation charge × " + days, amount: n(rates.outstation_charge_per_day) * days });
-      if (!o.stayProvided && nights > 0) lines.push({ label: "Driver food & stay × " + nights + " night" + (nights > 1 ? "s" : ""), amount: n(rates.driver_lodging_per_night) * nights });
-      return { total: sum(lines), lines: lines, totalKm: totalKm };
+      lines.push({ info: true, label: "Trip distance", value: totalKm + " km over " + days + " day" + (days > 1 ? "s" : "") });
+      lines.push({ label: "Minimum " + minPerDay + " km/day × " + days + " = " + minKm + " km × " + inr(rate), amount: minKm * rate });
+      if (totalKm > minKm) lines.push({ label: "Extra " + (totalKm - minKm) + " km × " + inr(rate), amount: (totalKm - minKm) * rate });
+      var nightCharge = !o.stayProvided && nights > 0;
+      if (nightCharge) lines.push({ label: "Driver food & stay × " + nights + " night" + (nights > 1 ? "s" : ""), amount: n(rates.driver_lodging_per_night) * nights });
+      else lines.push({ label: "Outstation charge × " + days + " day" + (days > 1 ? "s" : ""), amount: n(rates.outstation_charge_per_day) * days });
+      return { total: sum(lines), lines: lines, totalKm: totalKm, billKm: billKm };
     }
   };
   function sum(lines) { return lines.reduce(function (s, l) { return s + (l.amount || 0); }, 0); }
