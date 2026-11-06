@@ -117,20 +117,20 @@
       .catch(function () { clearTimeout(timer); return fallback(); });
   }
 
-  /* ---------- Google Maps loader (browser key, locked to our web addresses) ---------- */
+  /* ---------- Google Maps loader (browser key comes from the maps-key function, locked to our web addresses) ---------- */
   var GM_KEY = "", gmPromise = null;
   function loadGoogleMaps() {
     if (window.google && google.maps && google.maps.Map) return Promise.resolve(google.maps);
     if (gmPromise) return gmPromise;
-    if (!GM_KEY) return Promise.reject(new Error("no key"));
-    gmPromise = new Promise(function (res, rej) {
+    var keyP = GM_KEY ? Promise.resolve(GM_KEY) : fetch("/.netlify/functions/maps-key").then(function (r) { return r.json(); }).then(function (d) { if (!d.key) throw new Error("no key"); GM_KEY = d.key; return GM_KEY; });
+    gmPromise = keyP.then(function () { return new Promise(function (res, rej) {
       window.__jcGmReady = function () { res(google.maps); };
       window.gm_authFailure = function () { rej(new Error("auth")); };
       var sc = document.createElement("script");
       sc.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(GM_KEY) + "&v=weekly&loading=async&region=IN&language=en&callback=__jcGmReady";
       sc.async = true; sc.onerror = function () { rej(new Error("load")); };
       document.head.appendChild(sc);
-    });
+    }); });
     gmPromise.catch(function () { gmPromise = null; });
     return gmPromise;
   }
@@ -969,7 +969,6 @@
   /* ---------- Boot ---------- */
   Promise.all([getJSON("site"), getJSON("fleet"), getJSON("rates"), getJSON("reviews"), getJSON("clients")]).then(function (d) {
     var site = Object.assign({}, FALLBACK.site, d[0]);
-    GM_KEY = site.maps_browser_key || "";
     var cars = (d[1] && d[1].cars && d[1].cars.length ? d[1].cars : FALLBACK.fleet.cars).filter(function (c) { return c && c.name; });
     var rates = Object.assign({}, FALLBACK.rates, d[2]);
     var extra = (d[1] && Array.isArray(d[1].on_request) ? d[1].on_request : []).filter(function (c) { return c && c.name; });

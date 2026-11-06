@@ -176,10 +176,7 @@
     el.innerHTML = '<div class="find-map-fallback"><a class="btn btn-primary" href="' + gmaps + '" target="_blank" rel="noopener">Get directions in Google Maps</a></div>';
   }
   function draw() {
-    fetch("data/site.json").then(function (r) { return r.json(); }).then(function (site) {
-      if (!site.maps_browser_key || !window.jcLoadGoogleMaps) throw new Error("no key");
-      return window.jcLoadGoogleMaps(site.maps_browser_key);
-    }).then(function (gm) {
+    (window.jcLoadGoogleMaps ? window.jcLoadGoogleMaps() : Promise.reject(new Error("no loader"))).then(function (gm) {
       el.innerHTML = '<div class="gm"></div><span class="find-radar" aria-hidden="true"></span>';
       var pos = { lat: LAT, lng: LNG };
       var map = new gm.Map(el.firstChild, { center: pos, zoom: 16, clickableIcons: false, mapTypeControl: false, streetViewControl: false, fullscreenControl: false, gestureHandling: "cooperative" });
