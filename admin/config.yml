@@ -90,6 +90,7 @@ collections:
           - { name: address, label: "Address", widget: text }
           - { name: map_link, label: "Google Maps link", widget: string }
           - { name: enquiry_alert_key, label: "Enquiry email alerts – Web3Forms access key", widget: string, required: false, hint: "Every website enquiry is emailed to the inbox this key was created for (jyoti_travels@yahoo.com). Get a key for another inbox at web3forms.com. Leave empty to stop the emails." }
+          - { name: salesiq_widget_code, label: "Zoho SalesIQ widget code", widget: string, required: false, hint: "Visitor tracking for Zoho SalesIQ / Zoho Analytics (starts with siq). Only loads after a visitor accepts cookies. Leave empty to switch tracking off." }
           - { name: hours, label: "Opening hours", widget: string }
           - { name: gstin, label: "GSTIN", widget: string }
           - { name: msme, label: "Udyam / MSME number", widget: string }
