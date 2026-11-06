@@ -639,6 +639,13 @@
       var mnav = sec.querySelector(".car-mq-nav");
       if (mnav) mnav.addEventListener("click", function (e) { var bt = e.target.closest("button"); if (!bt) return; ctrls.forEach(function (c, i) { c.nudge((bt.dataset.dir === "next" ? 320 : -320) * (i % 2 ? -1 : 1)); }); });
     }
+    var credited = extra.filter(function (c) { return c.photo && c.photo_credit; });
+    if (credited.length) {
+      var cr = document.createElement("details"); cr.className = "photo-credits";
+      cr.innerHTML = "<summary>Photo credits</summary><p>Representative photos of each model, not of our partners' exact vehicles. From Wikimedia Commons: " +
+        credited.map(function (c) { return esc(c.name) + " – " + (c.photo_source ? '<a href="' + esc(c.photo_source) + '" target="_blank" rel="noopener">' + esc(c.photo_credit) + "</a>" : esc(c.photo_credit)); }).join("; ") + ".</p>";
+      sec.querySelector(".wrap").appendChild(cr);
+    }
     var tog = sec.querySelector(".car-toggle"), all = sec.querySelector(".car-all");
     if (tog && all) {
       var label = "See all " + extra.length + " cars by type";
@@ -943,7 +950,7 @@
 
     var hl = document.querySelector("[data-highlights]");
     if (hl) {
-      var items = [{ value: String(cars.length), label: cars.length > 12 ? "Car types, from hatchbacks to 45-seater coaches" : "Car types, from sedan to luxury MPV" }];
+      var items = [{ value: site.car_count || "30+", label: site.car_count_label || "Car types, from sedans to 32-seater buses" }];
       if (showClients && clients.length) items.push({ value: String(clients.length), label: clients.length === 1 ? "Corporate client" : "Corporate clients served" });
       items = items.concat(site.highlights || []);
       hl.innerHTML = items.filter(function (h) { return h && h.value; }).map(function (h) {
