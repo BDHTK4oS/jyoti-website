@@ -652,7 +652,11 @@
       tog.textContent = label;
       tog.addEventListener("click", function () {
         var open = all.hidden; all.hidden = !open; tog.setAttribute("aria-expanded", open); tog.textContent = open ? "Hide full list" : label;
-        if (open && hasGSAP() && !reduced()) gsap.from(all.querySelectorAll(".car-req:not([hidden])"), { y: 16, opacity: 0, duration: 0.45, stagger: 0.025, ease: "power2.out" });
+        if (!open) return;
+        var cards = all.querySelectorAll(".car-req:not([hidden])");
+        // These cards were hidden when the scroll-reveal ran, so they may still be marked invisible: show them now
+        cards.forEach(function (c) { c.classList.remove("fx-pre"); c.classList.add("fx-in"); });
+        if (hasGSAP() && !reduced()) gsap.fromTo(cards, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, stagger: 0.025, ease: "power2.out", overwrite: true, clearProps: "transform,opacity" });
       });
     }
     if (fil && cats.length > 1) {
