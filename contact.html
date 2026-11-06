@@ -72,6 +72,7 @@
     <form class="form" id="enquiry" name="enquiry" method="POST" data-netlify="true" netlify-honeypot="company_website">
       <input type="hidden" name="form-name" value="enquiry">
       <input type="hidden" name="enquiry_type" value="Booking">
+      <input type="hidden" name="visit_source" id="f-visit-source">
       <p hidden><label>Leave this empty <input name="company_website"></label></p>
       <h2 style="font-size:1.5rem">Trip details</h2>
       <div class="form-grid">
@@ -87,6 +88,7 @@
       <p class="note pin-note" hidden style="margin-top:0">Your map pins from the estimate are attached to this enquiry.</p>
       <div class="field"><label for="f-pickup">Pickup address</label><input id="f-pickup" name="pickup" required autocomplete="street-address" placeholder="Start typing an address or landmark"></div>
       <div class="field"><label for="f-drop">Drop address <span class="opt">(optional)</span></label><input id="f-drop" name="drop" placeholder="e.g. Kolkata Airport"></div>
+      <div class="field"><label for="f-heard">How did you find us?</label><select id="f-heard" name="heard_from"><option value="">Choose one</option><option>Google search</option><option>Google Maps</option><option>WhatsApp message</option><option>Friend or colleague</option><option>Existing customer</option><option>Justdial / Sulekha</option><option>Email from JyotiCab</option><option>Other</option></select></div>
       <div class="field"><label for="f-msg">Notes</label><textarea id="f-msg" name="message" placeholder="e.g. Flight 6E 512 at 2:40 pm, one extra bag"></textarea></div>
       <div class="form-status" role="status" hidden></div>
       <button class="btn btn-primary" type="submit">Send enquiry</button>
@@ -109,6 +111,24 @@
     </div>
   </div>
 </section>
+<section class="section faq-section" id="faq">
+  <div class="wrap">
+    <h2>Questions people ask</h2>
+    <div class="faq-list">
+      <details class="faq-item"><summary>How is the fare calculated?</summary><p>Local hire is charged by package: 10 hours or 100 km, counted from our Kasba garage and back to it. Extra hours or extra kilometres are charged, whichever comes to more. Your invoice is based on the actual reporting and release time and kilometres written on the duty slip.</p></details>
+      <details class="faq-item"><summary>Are tolls and parking included?</summary><p>No. Tolls, parking, interstate taxes and applicable taxes are paid by the customer, in addition to the fare.</p></details>
+      <details class="faq-item"><summary>Do you do late-night and early-morning airport pickups?</summary><p>Yes, we run 24 hours a day, 7 days a week. Within the city, a driver overtime charge applies after 11 pm and before 6 am.</p></details>
+      <details class="faq-item"><summary>How do outstation trips work?</summary><p>Outstation trips are charged per kilometre at the car&#x27;s rate, with a minimum of 250 km a day; extra kilometres are charged at the same rate. A daily outstation charge is added, except on trips where the driver&#x27;s night charge applies. For overnight trips, please arrange the driver&#x27;s food and stay; if that isn&#x27;t possible, a per-night charge applies.</p></details>
+      <details class="faq-item"><summary>Is the online estimate my final fare?</summary><p>No. The estimate on our website is a guide. The final bill is based on actual usage recorded on the duty slip.</p></details>
+      <details class="faq-item"><summary>How do I confirm a booking?</summary><p>Send the enquiry form, call or WhatsApp us. Your booking is confirmed only when we call you back to confirm the car, driver and reporting time. For a car within the next few hours, please call us directly.</p></details>
+      <details class="faq-item"><summary>How do I pay?</summary><p>Local bookings are paid when the car is released. Corporate customers are billed as per their contract, with GST invoices.</p></details>
+      <details class="faq-item"><summary>Do I need to show ID?</summary><p>First-time customers are asked to carry an original photo ID, which the driver checks at pickup.</p></details>
+      </div>
+  </div>
+</section>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How is the fare calculated?", "acceptedAnswer": {"@type": "Answer", "text": "Local hire is charged by package: 10 hours or 100 km, counted from our Kasba garage and back to it. Extra hours or extra kilometres are charged, whichever comes to more. Your invoice is based on the actual reporting and release time and kilometres written on the duty slip."}}, {"@type": "Question", "name": "Are tolls and parking included?", "acceptedAnswer": {"@type": "Answer", "text": "No. Tolls, parking, interstate taxes and applicable taxes are paid by the customer, in addition to the fare."}}, {"@type": "Question", "name": "Do you do late-night and early-morning airport pickups?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we run 24 hours a day, 7 days a week. Within the city, a driver overtime charge applies after 11 pm and before 6 am."}}, {"@type": "Question", "name": "How do outstation trips work?", "acceptedAnswer": {"@type": "Answer", "text": "Outstation trips are charged per kilometre at the car's rate, with a minimum of 250 km a day; extra kilometres are charged at the same rate. A daily outstation charge is added, except on trips where the driver's night charge applies. For overnight trips, please arrange the driver's food and stay; if that isn't possible, a per-night charge applies."}}, {"@type": "Question", "name": "Is the online estimate my final fare?", "acceptedAnswer": {"@type": "Answer", "text": "No. The estimate on our website is a guide. The final bill is based on actual usage recorded on the duty slip."}}, {"@type": "Question", "name": "How do I confirm a booking?", "acceptedAnswer": {"@type": "Answer", "text": "Send the enquiry form, call or WhatsApp us. Your booking is confirmed only when we call you back to confirm the car, driver and reporting time. For a car within the next few hours, please call us directly."}}, {"@type": "Question", "name": "How do I pay?", "acceptedAnswer": {"@type": "Answer", "text": "Local bookings are paid when the car is released. Corporate customers are billed as per their contract, with GST invoices."}}, {"@type": "Question", "name": "Do I need to show ID?", "acceptedAnswer": {"@type": "Answer", "text": "First-time customers are asked to carry an original photo ID, which the driver checks at pickup."}}]}
+</script>
 </main>
 
 <footer class="site-footer"></footer>

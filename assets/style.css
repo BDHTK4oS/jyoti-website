@@ -497,3 +497,43 @@ table.rates { width: 100%; border-collapse: collapse; min-width: 620px; font-var
 .nf-hero { min-height: 70vh; display: grid; align-items: center; }
 .nf-code { font: 800 clamp(5rem, 18vw, 11rem)/0.9 var(--font-display); margin: 0 0 8px; letter-spacing: -0.04em; background: linear-gradient(90deg, #fe005b, #7f8cff); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .nf-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+/* Cookie choice bar (only shown when SalesIQ tracking is configured) */
+.cookie-bar { position: fixed; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 60; max-width: min(440px, calc(100vw - 104px)); background: #0b0f3d; color: #fff; border: 1px solid rgba(255,255,255,.15); border-radius: 14px; padding: 14px 16px; box-shadow: 0 12px 32px rgba(0,0,0,.35); font-size: .88rem; line-height: 1.45; }
+.cookie-bar p { margin: 0 0 10px; }
+.cookie-bar a { color: #ff7fae; }
+.cookie-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.cookie-bar .btn-ghost { color: #fff; border-color: rgba(255,255,255,.5); }
+
+/* FAQ */
+.faq-section h2 { margin-bottom: 18px; }
+.faq-list { max-width: 820px; display: grid; gap: 10px; }
+.faq-item { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 0 18px; }
+.faq-item summary { cursor: pointer; padding: 16px 0; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: "+"; color: var(--accent, #fe005b); font-weight: 800; }
+.faq-item[open] summary::after { content: "–"; }
+.faq-item p { margin: 0 0 16px; line-height: 1.6; color: var(--muted); }
+
+/* Service pages (airport / outstation) */
+.svc-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 860px) { .svc-grid { grid-template-columns: 1fr; } }
+.svc-list { padding-left: 1.1em; line-height: 1.65; }
+.svc-list li { margin: 10px 0; }
+.svc-list a, .svc-card a, .lede-sm a { color: var(--link); }
+.svc-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.svc-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 22px; }
+.svc-card h3 { margin: 0 0 10px; }
+.svc-card ul { padding-left: 1.1em; line-height: 1.6; margin: 0 0 12px; }
+.lede-sm { color: var(--muted); max-width: 720px; line-height: 1.6; }
+.dest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 22px; }
+.dest-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.dest-card h3 { margin: 0; font-size: 1.15rem; }
+.dest-card p { margin: 0; line-height: 1.55; color: var(--muted); }
+.dest-card .dest-km { color: var(--accent, #fe005b); font-weight: 700; font-size: .85rem; }
+.dest-card .btn { margin-top: auto; align-self: flex-start; }
+.dest-card .dest-fare { color: var(--ink); font-weight: 800; font-size: 1.35rem; margin-top: 4px; }
+.dest-card .dest-fare span { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.dest-card .dest-basis { font-size: .8rem; }
+.fare-note { margin-top: 18px; font-size: .85rem; line-height: 1.6; color: var(--muted); max-width: 900px; }
+.fare-note a { color: var(--link); }

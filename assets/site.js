@@ -14,7 +14,7 @@
     ] },
     reviews: { reviews: [] },
     clients: { clients: [] },
-    rates: { package_hours: 10, package_km: 100, night_after_11pm: 300, early_before_6am: 200, outstation_km_per_day: 200, outstation_charge_per_day: 500, driver_lodging_per_night: 1500, office_lat: 22.5133, office_lng: 88.3919, garage_km_buffer: 2, traffic_factor: 2, time_rounding_minutes: 15, terms: [] }
+    rates: { package_hours: 10, package_km: 100, night_after_11pm: 300, early_before_6am: 200, outstation_km_per_day: 250, outstation_charge_per_day: 500, driver_lodging_per_night: 1500, office_lat: 22.5133, office_lng: 88.3919, garage_km_buffer: 2, traffic_factor: 2, time_rounding_minutes: 15, terms: [] }
   };
 
   function getJSON(name) {
@@ -66,26 +66,23 @@
       if (release > 23 * 60) lines.push({ label: "Driver charge, after 11 pm", amount: n(rates.night_after_11pm) });
       return { total: sum(lines), lines: lines, dutyMins: dutyMins, dutyKm: dutyKm };
     },
+    // Outstation: per-km billing with a daily minimum (e.g. 250 km a day x the car's per-km rate).
+    // A daily outstation charge is added, except when the driver's night charge applies (then only the night charge).
     outstation: function (car, rates, o) {
-      var pkgH = n(rates.package_hours, 10), pkgK = n(rates.package_km, 100), step = n(rates.time_rounding_minutes, 15) || 15;
       var g = Pricing.garage(rates, o.garage);
       var days = Math.max(1, Math.round(n(o.days, 1))), nights = Math.max(0, Math.round(n(o.nights)));
+      var minPerDay = n(rates.outstation_km_per_day, 250), rate = n(car.extra_km);
       var totalKm = Math.ceil(Math.max(0, n(o.km)) + (g ? g.km : 0));
-      var kmDay = totalKm / days;
-      var dayMins = Pricing.roundUp(Math.max(0, n(o.hoursPerDay, 10)) * 60 + (g ? g.mins / days : 0), step);
-      var exKm = Math.max(0, kmDay - pkgK), exMins = Math.max(0, dayMins - pkgH * 60);
-      var kmCost = exKm * n(car.extra_km), hrCost = exMins / 60 * n(car.extra_hour);
+      var minKm = minPerDay * days, billKm = Math.max(totalKm, minKm);
       var lines = [];
       if (g) lines.push({ info: true, label: "Garage out + in, approx.", value: g.km + " km · " + hm(g.mins) });
-      lines.push({ info: true, label: "Trip billed on", value: totalKm + " km over " + days + " day" + (days > 1 ? "s" : "") });
-      lines.push({ label: "Package × " + days + " day" + (days > 1 ? "s" : ""), amount: n(car.package_price) * days });
-      if (kmCost > 0 || hrCost > 0) {
-        if (kmCost >= hrCost) lines.push({ label: "Extra " + Math.round(exKm) + " km/day × " + days, amount: Math.round(kmCost * days) });
-        else lines.push({ label: "Extra " + hm(exMins) + "/day × " + days, amount: Math.round(hrCost * days) });
-      }
-      if (kmDay > n(rates.outstation_km_per_day, 200)) lines.push({ label: "Outstation charge × " + days, amount: n(rates.outstation_charge_per_day) * days });
-      if (!o.stayProvided && nights > 0) lines.push({ label: "Driver food & stay × " + nights + " night" + (nights > 1 ? "s" : ""), amount: n(rates.driver_lodging_per_night) * nights });
-      return { total: sum(lines), lines: lines, totalKm: totalKm };
+      lines.push({ info: true, label: "Trip distance", value: totalKm + " km over " + days + " day" + (days > 1 ? "s" : "") });
+      lines.push({ label: "Minimum " + minPerDay + " km/day × " + days + " = " + minKm + " km × " + inr(rate), amount: minKm * rate });
+      if (totalKm > minKm) lines.push({ label: "Extra " + (totalKm - minKm) + " km × " + inr(rate), amount: (totalKm - minKm) * rate });
+      var nightCharge = !o.stayProvided && nights > 0;
+      if (nightCharge) lines.push({ label: "Driver food & stay × " + nights + " night" + (nights > 1 ? "s" : ""), amount: n(rates.driver_lodging_per_night) * nights });
+      else lines.push({ label: "Outstation charge × " + days + " day" + (days > 1 ? "s" : ""), amount: n(rates.outstation_charge_per_day) * days });
+      return { total: sum(lines), lines: lines, totalKm: totalKm, billKm: billKm };
     }
   };
   function sum(lines) { return lines.reduce(function (s, l) { return s + (l.amount || 0); }, 0); }
@@ -189,8 +186,8 @@
       '<li><a href="tel:' + digits(site.phone_landline) + '">' + esc(site.phone_landline) + "</a></li>" +
       '<li><a href="' + waLink(site) + '" target="_blank" rel="noopener">WhatsApp ' + esc(site.whatsapp) + "</a></li>" +
       '<li><a href="mailto:' + esc(site.email) + '">' + esc(site.email) + "</a></li></ul></div>" +
-      "<div><h3>Pages</h3><ul>" + PAGES.map(function (p) { return '<li><a href="' + p[0] + '">' + p[1] + "</a></li>"; }).join("") + "</ul></div>" +
-      '<div class="legal"><span>© ' + new Date().getFullYear() + " " + esc(site.business_name) + "</span><span>GSTIN " + esc(site.gstin) + "</span><span>Udyam " + esc(site.msme) + '</span><a href="privacy.html">Privacy policy</a><a href="terms.html">Terms of service</a></div>' +
+      "<div><h3>Pages</h3><ul>" + PAGES.concat([["airport-cab.html", "Airport cabs"], ["outstation-cabs.html", "Outstation trips"]]).map(function (p) { return '<li><a href="' + p[0] + '">' + p[1] + "</a></li>"; }).join("") + "</ul></div>" +
+      '<div class="legal"><span>© ' + new Date().getFullYear() + " " + esc(site.business_name) + "</span><span>GSTIN " + esc(site.gstin) + "</span><span>Udyam " + esc(site.msme) + '</span><a href="privacy.html">Privacy policy</a><a href="terms.html">Terms of service</a>' + (site.google_review_url ? '<a href="' + esc(site.google_review_url) + '" target="_blank" rel="noopener">Review us on Google</a>' : "") + '</div>' +
       '<p class="legal-note">Client names and logos are trademarks of their respective owners, shown only to identify organisations we have served. Maps and place data © Google.</p></div>';
   }
 
@@ -199,7 +196,7 @@
       var k = el.getAttribute("data-site"), v = site[k];
       if (v == null || v === "") return;
       if (el.tagName === "A") {
-        if (k === "whatsapp") el.href = waLink(site, "Hello, I'd like to book a cab.");
+        if (k === "whatsapp") el.href = waLink(site, "Hi, I found you on jyoticab.com. I'd like to book a cab.");
         else if (k === "email") el.href = "mailto:" + v;
         else if (k === "map_link") { el.href = v; return; }
         else el.href = "tel:" + digits(v);
@@ -575,7 +572,7 @@
         res.querySelector(".est-lines").innerHTML = (garage ? "" : '<div class="est-warn"><dt>Pickup not pinned yet</dt><dd>Garage travel not included</dd></div>') +
           r.lines.map(function (l) { return '<div class="' + (l.info ? "info" : "") + '"><dt>' + esc(l.label) + "</dt><dd>" + (l.info ? esc(l.value) : inr(l.amount)) + "</dd></div>"; }).join("");
         var trip = state.type === "local" ? "local duty, " + val("hours") + " hrs / " + val("km") + " km" : "outstation, " + val("days") + " days / " + val("trip") + " km";
-        var msg = "Hello JyotiCab.com, I'd like to book: " + car.name + ", " + trip + ". Website estimate " + inr(r.total) + "." +
+        var msg = "Hi, I found you on jyoticab.com. I'd like to book: " + car.name + ", " + trip + ". Website estimate " + inr(r.total) + "." +
           (p ? "\nPickup: " + gmaps(p) : "") + (d ? "\n" + picker.dropWord + ": " + gmaps(d) : "");
         res.querySelector(".est-wa").href = waLink(site, msg);
         res.querySelector(".est-book").href = "contact.html?car=" + encodeURIComponent(car.name) + "&trip=" + state.type + (p ? "&pickup=" + p.lat.toFixed(5) + "," + p.lng.toFixed(5) : "") + (d ? "&drop=" + d.lat.toFixed(5) + "," + d.lng.toFixed(5) : "");
@@ -665,6 +662,77 @@
     } catch (e) {}
   }
 
+  /* ---------- Visit source + Zoho SalesIQ tracking (only after cookie consent) ---------- */
+  function visitSource() {
+    var key = "jc_src", src = null;
+    try { src = sessionStorage.getItem(key); } catch (e) {}
+    if (!src) {
+      var q = new URLSearchParams(location.search), ref = document.referrer, host = "";
+      try { host = ref ? new URL(ref).hostname : ""; } catch (e) {}
+      if (q.get("utm_source")) src = q.get("utm_source") + (q.get("utm_medium") ? " / " + q.get("utm_medium") : "") + (q.get("utm_campaign") ? " / " + q.get("utm_campaign") : "");
+      else if (host && host.indexOf("jyoticab.com") === -1) src = "referral: " + host;
+      else src = "direct";
+      try { sessionStorage.setItem(key, src); } catch (e) {}
+    }
+    return src;
+  }
+  function loadSalesIQ(code) {
+    if (!code || document.getElementById("zsiqscript")) return;
+    window.$zoho = window.$zoho || {};
+    window.$zoho.salesiq = window.$zoho.salesiq || {};
+    window.$zoho.salesiq.ready = function () {
+      try { window.$zoho.salesiq.floatbutton.visible("hide"); } catch (e) {}   // tracking only; customers chat on WhatsApp
+      try { window.$zoho.salesiq.visitor.info({ "First source": visitSource() }); } catch (e) {}
+    };
+    var sc = document.createElement("script");
+    sc.id = "zsiqscript"; sc.defer = true;
+    sc.src = "https://salesiq.zohopublic.com/widget?wc=" + encodeURIComponent(code);
+    document.body.appendChild(sc);
+  }
+  function cookieConsent(site) {
+    var code = site.salesiq_widget_code;
+    if (!code) return;
+    var choice = null;
+    try { choice = localStorage.getItem("jc_cookies"); } catch (e) {}
+    if (choice === "yes") { loadSalesIQ(code); return; }
+    if (choice === "no") return;
+    var bar = document.createElement("div");
+    bar.className = "cookie-bar"; bar.setAttribute("role", "region"); bar.setAttribute("aria-label", "Cookie choice");
+    bar.innerHTML = '<p>We use cookies to understand how visitors find and use our website. See our <a href="privacy.html">privacy policy</a>.</p>' +
+      '<div class="cookie-actions"><button type="button" class="btn btn-ghost btn-sm" data-c="no">Decline</button><button type="button" class="btn btn-primary btn-sm" data-c="yes">Accept</button></div>';
+    bar.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-c]"); if (!b) return;
+      try { localStorage.setItem("jc_cookies", b.dataset.c); } catch (er) {}
+      bar.remove();
+      if (b.dataset.c === "yes") loadSalesIQ(code);
+    });
+    document.body.appendChild(bar);
+  }
+  // Calls and WhatsApp taps are enquiries too: record them in SalesIQ (only if the visitor accepted cookies)
+  function trackContactTaps() {
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me/"]');
+      if (!a) return;
+      var kind = /^tel:/.test(a.getAttribute("href")) ? "Call tap" : "WhatsApp tap";
+      var z = window.$zoho && window.$zoho.salesiq;
+      try { if (z && z.visitor && z.visitor.customaction) z.visitor.customaction(kind, { page: location.pathname, source: visitSource() }); } catch (er) {}
+    }, true);
+  }
+  function salesiqLead(form) {
+    var z = window.$zoho && window.$zoho.salesiq;
+    if (!z || !z.visitor) return;
+    var v = function (n) { var el = form.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ""; };
+    try {
+      if (v("name")) z.visitor.name(v("name"));
+      if (v("email")) z.visitor.email(v("email"));
+      if (v("phone")) z.visitor.contactnumber(v("phone"));
+      var info = { "Enquiry type": v("enquiry_type"), "Found us via": v("heard_from"), "Visit source": v("visit_source") };
+      ["company", "trip", "car", "date", "pickup", "drop", "volume"].forEach(function (k) { if (v(k)) info[k.charAt(0).toUpperCase() + k.slice(1)] = v(k); });
+      z.visitor.info(info);
+      if (z.visitor.customaction) z.visitor.customaction("Enquiry sent", { type: v("enquiry_type") });
+    } catch (e) {}
+  }
+
   function enquiryForm(cars, site, extra) {
     var form = document.getElementById("enquiry");
     if (!form) return;
@@ -687,6 +755,7 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
+      var vs = form.querySelector("#f-visit-source"); if (vs) vs.value = visitSource();
       var btn = form.querySelector("button[type=submit]");
       btn.disabled = true; btn.textContent = "Sending…";
       var body = new URLSearchParams(new FormData(form)).toString();
@@ -696,7 +765,7 @@
         if (!r.ok) throw new Error();
         status.hidden = false; status.className = "form-status ok";
         status.textContent = r.preview ? "Preview only: on the live site this enquiry is emailed to you." : "Enquiry sent. We'll call you back shortly to confirm the car and timing.";
-        if (!r.preview) emailAlert(form, site);
+        if (!r.preview) { emailAlert(form, site); salesiqLead(form); }
         form.reset();
       }).catch(function () {
         status.hidden = false; status.className = "form-status err";
@@ -949,7 +1018,7 @@
         '<p class="cp-label">Call us, 24 hours</p><p class="cp-num">' + esc(shown) + "</p>" +
         '<div class="cp-qr" hidden><div class="cp-qr-img" aria-hidden="true"></div><p>Scan with your phone camera to call</p></div>' +
         '<div class="cp-actions"><button type="button" class="btn btn-primary cp-copy">Copy number</button>' +
-        '<a class="btn btn-ghost" href="' + esc(waLink(site, "Hello JyotiCab.com, I'd like to book a cab.")) + '" target="_blank" rel="noopener">Chat on WhatsApp</a></div>' +
+        '<a class="btn btn-ghost" href="' + esc(waLink(site, "Hi, I found you on jyoticab.com. I'd like to book a cab.")) + '" target="_blank" rel="noopener">Chat on WhatsApp</a></div>' +
         '<a class="cp-app" href="' + esc(tel) + '">Call from an app on this computer</a></div>';
       document.body.appendChild(box);
       showQR(box.querySelector(".cp-qr"), "tel:+91" + digits(num).slice(-10));
@@ -976,7 +1045,7 @@
     var f = document.querySelector(".site-footer"); if (f) f.innerHTML = footer(site);
     var btn = document.querySelector(".menu-btn"), nav = document.getElementById("site-nav");
     if (btn) btn.addEventListener("click", function () { var o = nav.classList.toggle("open"); btn.setAttribute("aria-expanded", o); });
-    var wa = document.querySelector(".wa-float"); if (wa) wa.href = waLink(site, "Hello JyotiCab.com, I'd like to book a cab.");
+    var wa = document.querySelector(".wa-float"); if (wa) wa.href = waLink(site, "Hi, I found you on jyoticab.com. I'd like to book a cab.");
     bindText(site);
 
     var fg = document.querySelector("[data-fleet]"); if (fg) fleetCards(fg, cars, n(fg.getAttribute("data-fleet"), 0) || cars.length);
@@ -997,6 +1066,7 @@
     enquiryForm(cars, site, extra);
     callPanel(site);
     heroIntro();
+    visitSource(); cookieConsent(site); trackContactTaps();
     dutyLine();
   });
 
