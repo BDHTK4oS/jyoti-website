@@ -532,3 +532,8 @@ table.rates { width: 100%; border-collapse: collapse; min-width: 620px; font-var
 .dest-card p { margin: 0; line-height: 1.55; color: var(--muted); }
 .dest-card .dest-km { color: var(--accent, #fe005b); font-weight: 700; font-size: .85rem; }
 .dest-card .btn { margin-top: auto; align-self: flex-start; }
+.dest-card .dest-fare { color: var(--ink); font-weight: 800; font-size: 1.35rem; margin-top: 4px; }
+.dest-card .dest-fare span { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.dest-card .dest-basis { font-size: .8rem; }
+.fare-note { margin-top: 18px; font-size: .85rem; line-height: 1.6; color: var(--muted); max-width: 900px; }
+.fare-note a { color: var(--link); }
